@@ -9,7 +9,6 @@ import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-import Maven.Model.Cliente;
 import Maven.Model.OrdemServico;
 import Maven.Repository.Interface.OrdemServicoRepository;
 import Maven.Util.ConnectionFactory;
