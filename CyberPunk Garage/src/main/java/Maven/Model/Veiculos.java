@@ -9,19 +9,19 @@ public class Veiculos {
 
     private String placa;
 
-    private Cliente cliente;
+    private int clienteId;
 
-    public Veiculos(int id, String modelo, String placa, Cliente cliente) {
+    public Veiculos(int id, String modelo, String placa, int cliente) {
         this.id = id;
         this.modelo = modelo;
         this.placa = placa;
-        this.cliente = cliente;
+        this.clienteId = cliente;
     }
 
-    public Veiculos(String modelo, String placa, Cliente cliente) {
+    public Veiculos(String modelo, String placa, int cliente) {
         this.modelo = modelo;
         this.placa = placa;
-        this.cliente = cliente;
+        this.clienteId = cliente;
     }
 
     public int getId() {
@@ -48,12 +48,12 @@ public class Veiculos {
         this.placa = placa;
     }
 
-    public Cliente getCliente() {
-        return cliente;
+    public int getCliente() {
+        return clienteId;
     }
 
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
+    public void setCliente(int clienteId) {
+        this.clienteId = clienteId;
     }
 
 }

@@ -6,8 +6,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
+import Maven.Model.Cliente;
 import Maven.Model.OrdemServico;
 import Maven.Repository.Interface.OrdemServicoRepository;
 import Maven.Util.ConnectionFactory;
@@ -57,12 +59,14 @@ public class OrdemServicoRepositoryImpl implements OrdemServicoRepository{
     }
 
     @Override
-    public OrdemServico updateCliente(OrdemServico ordemServico) throws SQLException {
+    public OrdemServico updateOrdemServico(OrdemServico ordemServico) throws SQLException {
+        
         String command = """
                 UPDATE ordem_servico
                 SET 
-                nome = ?,
-                email = ?
+                descricao = ?,
+                dataEntrega = ?,
+                status = ?
                 WHERE id = ?
                 """;
 
@@ -72,8 +76,6 @@ public class OrdemServicoRepositoryImpl implements OrdemServicoRepository{
             stmt.setString(1, ordemServico.getDescricao());
             stmt.setDate(2, Date.valueOf(ordemServico.getDataEntrega()));
             stmt.setString(3, ordemServico.getStatus());
-            stmt.setInt(4, ordemServico.getVeiculo());
-            stmt.setInt(5, ordemServico.getMecanico());
 
             stmt.executeUpdate();
 
@@ -83,20 +85,117 @@ public class OrdemServicoRepositoryImpl implements OrdemServicoRepository{
 
     @Override
     public ArrayList<OrdemServico> findAll() throws SQLException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findAll'");
+
+        ArrayList<OrdemServico> ordemServicos = new ArrayList<>();
+
+        String command = """
+                SELECT
+                id,
+                descricao,
+                data_entrega,
+                status,
+                veiculo_id,
+                mecanico_id
+                FROM ordem_servico
+                """;
+
+        try (Connection conn = ConnectionFactory.conectar();
+        PreparedStatement stmt = conn.prepareStatement(command)) {
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                
+                var ordemServico = new OrdemServico(
+                    rs.getInt("id"),
+                    rs.getString("descricao"),
+                    rs.getObject("data_entrega", LocalDate.class),
+                    rs.getString("Status"),
+                    rs.getInt("veiculo_id"),
+                    rs.getInt("mecanico_id")
+                );
+
+                ordemServicos.add(ordemServico);
+
+            }
+
+            return ordemServicos;
+        }
     }
 
     @Override
     public OrdemServico findById(int chosenId) throws SQLException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findById'");
+
+        OrdemServico ordemServico;
+
+        String command = """
+                SELECT
+                id,
+                descricao,
+                data_entrega,
+                status,
+                veiculo_id,
+                mecanico_id
+                FROM ordem_servico
+                WHERE id = ?
+                """;
+
+        try (Connection conn = ConnectionFactory.conectar();
+        PreparedStatement stmt = conn.prepareStatement(command)) {
+
+            stmt.setInt(1, chosenId);
+
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                
+                var findOrdemServico = new OrdemServico(
+                    rs.getInt("id"),
+                    rs.getString("descricao"),
+                    rs.getObject("data_entrega", LocalDate.class),
+                    rs.getString("Status"),
+                    rs.getInt("veiculo_id"),
+                    rs.getInt("mecanico_id")
+                );
+
+                ordemServico = findOrdemServico;
+
+                return ordemServico;
+
+            }
+            else {
+
+                throw new SQLException("Cliente não encontrado. ");
+
+            }
+        }
     }
 
     @Override
     public boolean delete(int chosenId) throws SQLException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'delete'");
+        String command = """
+                DELETE FROM ordem_servico
+                WHERE id = ?
+                """;
+
+        try (Connection conn = ConnectionFactory.conectar();
+        PreparedStatement stmt = conn.prepareStatement(command)) {
+
+            stmt.setInt(1, chosenId);
+
+            int linhasAlteradas = stmt.executeUpdate();
+
+            if (linhasAlteradas != 0) {
+                
+                return true;
+
+            }
+            else {
+
+                return false;
+
+            }
+        }
     }
 
 }

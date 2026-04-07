@@ -9,7 +9,7 @@ public interface OrdemServicoRepository {
 
     OrdemServico save (OrdemServico ordemServico) throws SQLException;
 
-    OrdemServico updateCliente (OrdemServico ordemServico ) throws SQLException;
+    OrdemServico updateOrdemServico (OrdemServico ordemServico ) throws SQLException;
 
     ArrayList<OrdemServico> findAll () throws SQLException;
 
