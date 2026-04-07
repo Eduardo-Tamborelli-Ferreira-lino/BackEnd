@@ -12,26 +12,26 @@ public class OrdemServico {
 
     private String status;  //ABERTO, EM_ANDAMENTO, CONCLUIDO
 
-    private Veiculos veiculo;
+    private int veiculoId;
 
-    private Veiculos macanico;
+    private int mecanicoId;
 
-    public OrdemServico(int id, String descricao, LocalDate dataEntrega, String status, Veiculos veiculo,
-            Veiculos macanico) {
+    public OrdemServico(int id, String descricao, LocalDate dataEntrega, String status, int veiculo,
+            int macanico) {
         this.id = id;
         this.descricao = descricao;
         this.dataEntrega = dataEntrega;
         this.status = status;
-        this.veiculo = veiculo;
-        this.macanico = macanico;
+        this.veiculoId = veiculo;
+        this.mecanicoId = macanico;
     }
 
-    public OrdemServico(String descricao, LocalDate dataEntrega, String status, Veiculos veiculo, Veiculos macanico) {
+    public OrdemServico(String descricao, LocalDate dataEntrega, String status, int veiculo, int macanico) {
         this.descricao = descricao;
         this.dataEntrega = dataEntrega;
         this.status = status;
-        this.veiculo = veiculo;
-        this.macanico = macanico;
+        this.veiculoId = veiculo;
+        this.mecanicoId = macanico;
     }
 
     public int getId() {
@@ -66,20 +66,20 @@ public class OrdemServico {
         this.status = status;
     }
 
-    public Veiculos getVeiculo() {
-        return veiculo;
+    public int getVeiculo() {
+        return veiculoId;
     }
 
-    public void setVeiculo(Veiculos veiculo) {
-        this.veiculo = veiculo;
+    public void setVeiculo(int veiculoId) {
+        this.veiculoId = veiculoId;
     }
 
-    public Veiculos getMacanico() {
-        return macanico;
+    public int getMecanico() {
+        return mecanicoId;
     }
 
-    public void setMacanico(Veiculos macanico) {
-        this.macanico = macanico;
+    public void setMecanico(int macanicoId) {
+        this.mecanicoId = macanicoId;
     }
 
     
