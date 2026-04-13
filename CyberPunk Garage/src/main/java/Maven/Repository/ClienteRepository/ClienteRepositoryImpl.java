@@ -1,4 +1,4 @@
-package Maven.Repository.Repository;
+package Maven.Repository.ClienteRepository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,14 +8,13 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import Maven.Model.Cliente;
-import Maven.Repository.Interface.ClienteRepository;
 import Maven.Util.ConnectionFactory;
 
-public class ClienteRepositoryImpl implements ClienteRepository{
+public class ClienteRepositoryImpl implements ClienteRepository {
 
     @Override
     public Cliente save(Cliente cliente) throws SQLException {
-        
+
         String command = """
                 INSERT INTO clientes(
                 nome,
@@ -25,8 +24,7 @@ public class ClienteRepositoryImpl implements ClienteRepository{
                 """;
 
         try (Connection conn = ConnectionFactory.conectar();
-        PreparedStatement stmt = conn.prepareStatement
-        (command, Statement.RETURN_GENERATED_KEYS)) {
+                PreparedStatement stmt = conn.prepareStatement(command, Statement.RETURN_GENERATED_KEYS)) {
 
             stmt.setString(1, cliente.getNome());
             stmt.setString(2, cliente.getEmail());
@@ -36,13 +34,12 @@ public class ClienteRepositoryImpl implements ClienteRepository{
             ResultSet rs = stmt.getGeneratedKeys();
 
             if (rs.next()) {
-                
+
                 cliente.setId(rs.getInt(1));
 
                 return cliente;
-            }
-            else {
-                
+            } else {
+
                 throw new SQLException("Erro ao cadastrar cliente. ");
 
             }
@@ -51,17 +48,17 @@ public class ClienteRepositoryImpl implements ClienteRepository{
 
     @Override
     public Cliente updateCliente(Cliente cliente) throws SQLException {
-        
+
         String command = """
                 UPDATE clientes
-                SET 
+                SET
                 nome = ?,
                 email = ?
                 WHERE id = ?
                 """;
 
         try (Connection conn = ConnectionFactory.conectar();
-        PreparedStatement stmt = conn.prepareStatement(command)) {
+                PreparedStatement stmt = conn.prepareStatement(command)) {
 
             stmt.setString(1, cliente.getNome());
             stmt.setString(2, cliente.getEmail());
@@ -75,7 +72,7 @@ public class ClienteRepositoryImpl implements ClienteRepository{
 
     @Override
     public ArrayList<Cliente> findAll() throws SQLException {
-        
+
         ArrayList<Cliente> clientes = new ArrayList<>();
 
         String command = """
@@ -87,17 +84,16 @@ public class ClienteRepositoryImpl implements ClienteRepository{
                 """;
 
         try (Connection conn = ConnectionFactory.conectar();
-        PreparedStatement stmt = conn.prepareStatement(command)) {
+                PreparedStatement stmt = conn.prepareStatement(command)) {
 
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
-                
+
                 var cliente = new Cliente(
-                    rs.getInt("id"),
-                    rs.getString("nome"),
-                    rs.getString("email")
-                );
+                        rs.getInt("id"),
+                        rs.getString("nome"),
+                        rs.getString("email"));
 
                 clientes.add(cliente);
 
@@ -122,26 +118,24 @@ public class ClienteRepositoryImpl implements ClienteRepository{
                 """;
 
         try (Connection conn = ConnectionFactory.conectar();
-        PreparedStatement stmt = conn.prepareStatement(command)) {
+                PreparedStatement stmt = conn.prepareStatement(command)) {
 
             stmt.setInt(1, chosenId);
 
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                
+
                 var findCliente = new Cliente(
-                    rs.getInt("id"),
-                    rs.getString("nome"),
-                    rs.getString("email")
-                );
+                        rs.getInt("id"),
+                        rs.getString("nome"),
+                        rs.getString("email"));
 
                 cliente = findCliente;
 
                 return cliente;
 
-            }
-            else {
+            } else {
 
                 throw new SQLException("Cliente não encontrado. ");
 
@@ -151,25 +145,24 @@ public class ClienteRepositoryImpl implements ClienteRepository{
 
     @Override
     public boolean delete(int chosenId) throws SQLException {
-        
+
         String command = """
                 DELETE FROM clientes
                 WHERE id = ?
                 """;
 
         try (Connection conn = ConnectionFactory.conectar();
-        PreparedStatement stmt = conn.prepareStatement(command)) {
+                PreparedStatement stmt = conn.prepareStatement(command)) {
 
             stmt.setInt(1, chosenId);
 
             int linhasAlteradas = stmt.executeUpdate();
 
             if (linhasAlteradas != 0) {
-                
+
                 return true;
 
-            }
-            else {
+            } else {
 
                 return false;
 

@@ -1,4 +1,4 @@
-package Maven.Repository.Repository;
+package Maven.Repository.MecanicosRepository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,10 +8,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import Maven.Model.Mecanicos;
-import Maven.Repository.Interface.MecanicosRepository;
 import Maven.Util.ConnectionFactory;
 
-public class MecanicosRepositoryImpl implements MecanicosRepository{
+public class MecanicosRepositoryImpl implements MecanicosRepository {
 
     @Override
     public Mecanicos save(Mecanicos mecanicos) throws SQLException {
@@ -25,8 +24,7 @@ public class MecanicosRepositoryImpl implements MecanicosRepository{
                 """;
 
         try (Connection conn = ConnectionFactory.conectar();
-        PreparedStatement stmt = conn.prepareStatement
-        (command, Statement.RETURN_GENERATED_KEYS)) {
+                PreparedStatement stmt = conn.prepareStatement(command, Statement.RETURN_GENERATED_KEYS)) {
 
             stmt.setString(1, mecanicos.getNome());
             stmt.setString(2, mecanicos.getEspecialidade());
@@ -37,13 +35,12 @@ public class MecanicosRepositoryImpl implements MecanicosRepository{
             ResultSet rs = stmt.getGeneratedKeys();
 
             if (rs.next()) {
-                
+
                 mecanicos.setId(rs.getInt(1));
 
                 return mecanicos;
-            }
-            else {
-                
+            } else {
+
                 throw new SQLException("Erro ao cadastrar Motorista. ");
 
             }
@@ -51,10 +48,10 @@ public class MecanicosRepositoryImpl implements MecanicosRepository{
     }
 
     @Override
-    public Mecanicos updateMecanicos (Mecanicos mecanicos) throws SQLException {
+    public Mecanicos updateMecanicos(Mecanicos mecanicos) throws SQLException {
         String command = """
                 UPDATE mecanicos
-                SET 
+                SET
                 nome = ?,
                 especialidade = ?,
                 valor_hora = ?
@@ -62,7 +59,7 @@ public class MecanicosRepositoryImpl implements MecanicosRepository{
                 """;
 
         try (Connection conn = ConnectionFactory.conectar();
-        PreparedStatement stmt = conn.prepareStatement(command)) {
+                PreparedStatement stmt = conn.prepareStatement(command)) {
 
             stmt.setString(1, mecanicos.getNome());
             stmt.setString(2, mecanicos.getEspecialidade());
@@ -89,18 +86,17 @@ public class MecanicosRepositoryImpl implements MecanicosRepository{
                 """;
 
         try (Connection conn = ConnectionFactory.conectar();
-        PreparedStatement stmt = conn.prepareStatement(command)) {
+                PreparedStatement stmt = conn.prepareStatement(command)) {
 
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
-                
+
                 var mecanico = new Mecanicos(
-                    rs.getInt("id"),
-                    rs.getString("nome"),
-                    rs.getString("especialidade"),
-                    rs.getDouble("valor_hora")
-                );
+                        rs.getInt("id"),
+                        rs.getString("nome"),
+                        rs.getString("especialidade"),
+                        rs.getDouble("valor_hora"));
 
                 mecanicos.add(mecanico);
 
@@ -125,27 +121,25 @@ public class MecanicosRepositoryImpl implements MecanicosRepository{
                 """;
 
         try (Connection conn = ConnectionFactory.conectar();
-        PreparedStatement stmt = conn.prepareStatement(command)) {
+                PreparedStatement stmt = conn.prepareStatement(command)) {
 
             stmt.setInt(1, chosenId);
 
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                
+
                 var findMotorista = new Mecanicos(
-                    rs.getInt("id"),
-                    rs.getString("nome"),
-                    rs.getString("especialidade"),
-                    rs.getDouble("valor_hora")
-                );
+                        rs.getInt("id"),
+                        rs.getString("nome"),
+                        rs.getString("especialidade"),
+                        rs.getDouble("valor_hora"));
 
                 mecanicos = findMotorista;
 
                 return mecanicos;
 
-            }
-            else {
+            } else {
 
                 throw new SQLException("Motorista não encontrado. ");
 
@@ -162,18 +156,17 @@ public class MecanicosRepositoryImpl implements MecanicosRepository{
                 """;
 
         try (Connection conn = ConnectionFactory.conectar();
-        PreparedStatement stmt = conn.prepareStatement(command)) {
+                PreparedStatement stmt = conn.prepareStatement(command)) {
 
             stmt.setInt(1, chosenId);
 
             int linhasAlteradas = stmt.executeUpdate();
 
             if (linhasAlteradas != 0) {
-                
+
                 return true;
 
-            }
-            else {
+            } else {
 
                 return false;
 

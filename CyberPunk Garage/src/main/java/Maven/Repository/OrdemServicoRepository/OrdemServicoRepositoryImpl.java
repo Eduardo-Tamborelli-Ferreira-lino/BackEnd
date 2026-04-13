@@ -1,4 +1,4 @@
-package Maven.Repository.Repository;
+package Maven.Repository.OrdemServicoRepository;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -10,10 +10,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 import Maven.Model.OrdemServico;
-import Maven.Repository.Interface.OrdemServicoRepository;
 import Maven.Util.ConnectionFactory;
 
-public class OrdemServicoRepositoryImpl implements OrdemServicoRepository{
+public class OrdemServicoRepositoryImpl implements OrdemServicoRepository {
 
     @Override
     public OrdemServico save(OrdemServico ordemServico) throws SQLException {
@@ -30,8 +29,7 @@ public class OrdemServicoRepositoryImpl implements OrdemServicoRepository{
                 """;
 
         try (Connection conn = ConnectionFactory.conectar();
-        PreparedStatement stmt = conn.prepareStatement
-        (command, Statement.RETURN_GENERATED_KEYS)) {
+                PreparedStatement stmt = conn.prepareStatement(command, Statement.RETURN_GENERATED_KEYS)) {
 
             stmt.setString(1, ordemServico.getDescricao());
             stmt.setDate(2, Date.valueOf(ordemServico.getDataEntrega()));
@@ -44,13 +42,12 @@ public class OrdemServicoRepositoryImpl implements OrdemServicoRepository{
             ResultSet rs = stmt.getGeneratedKeys();
 
             if (rs.next()) {
-                
+
                 ordemServico.setId(rs.getInt(1));
 
                 return ordemServico;
-            }
-            else {
-                
+            } else {
+
                 throw new SQLException("Erro ao cadastrar cliente. ");
 
             }
@@ -59,10 +56,10 @@ public class OrdemServicoRepositoryImpl implements OrdemServicoRepository{
 
     @Override
     public OrdemServico updateOrdemServico(OrdemServico ordemServico) throws SQLException {
-        
+
         String command = """
                 UPDATE ordem_servico
-                SET 
+                SET
                 descricao = ?,
                 dataEntrega = ?,
                 status = ?
@@ -70,7 +67,7 @@ public class OrdemServicoRepositoryImpl implements OrdemServicoRepository{
                 """;
 
         try (Connection conn = ConnectionFactory.conectar();
-        PreparedStatement stmt = conn.prepareStatement(command)) {
+                PreparedStatement stmt = conn.prepareStatement(command)) {
 
             stmt.setString(1, ordemServico.getDescricao());
             stmt.setDate(2, Date.valueOf(ordemServico.getDataEntrega()));
@@ -99,20 +96,19 @@ public class OrdemServicoRepositoryImpl implements OrdemServicoRepository{
                 """;
 
         try (Connection conn = ConnectionFactory.conectar();
-        PreparedStatement stmt = conn.prepareStatement(command)) {
+                PreparedStatement stmt = conn.prepareStatement(command)) {
 
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
-                
+
                 var ordemServico = new OrdemServico(
-                    rs.getInt("id"),
-                    rs.getString("descricao"),
-                    rs.getObject("data_entrega", LocalDate.class),
-                    rs.getString("Status"),
-                    rs.getInt("veiculo_id"),
-                    rs.getInt("mecanico_id")
-                );
+                        rs.getInt("id"),
+                        rs.getString("descricao"),
+                        rs.getObject("data_entrega", LocalDate.class),
+                        rs.getString("Status"),
+                        rs.getInt("veiculo_id"),
+                        rs.getInt("mecanico_id"));
 
                 ordemServicos.add(ordemServico);
 
@@ -140,29 +136,27 @@ public class OrdemServicoRepositoryImpl implements OrdemServicoRepository{
                 """;
 
         try (Connection conn = ConnectionFactory.conectar();
-        PreparedStatement stmt = conn.prepareStatement(command)) {
+                PreparedStatement stmt = conn.prepareStatement(command)) {
 
             stmt.setInt(1, chosenId);
 
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                
+
                 var findOrdemServico = new OrdemServico(
-                    rs.getInt("id"),
-                    rs.getString("descricao"),
-                    rs.getObject("data_entrega", LocalDate.class),
-                    rs.getString("Status"),
-                    rs.getInt("veiculo_id"),
-                    rs.getInt("mecanico_id")
-                );
+                        rs.getInt("id"),
+                        rs.getString("descricao"),
+                        rs.getObject("data_entrega", LocalDate.class),
+                        rs.getString("Status"),
+                        rs.getInt("veiculo_id"),
+                        rs.getInt("mecanico_id"));
 
                 ordemServico = findOrdemServico;
 
                 return ordemServico;
 
-            }
-            else {
+            } else {
 
                 throw new SQLException("Cliente não encontrado. ");
 
@@ -178,18 +172,17 @@ public class OrdemServicoRepositoryImpl implements OrdemServicoRepository{
                 """;
 
         try (Connection conn = ConnectionFactory.conectar();
-        PreparedStatement stmt = conn.prepareStatement(command)) {
+                PreparedStatement stmt = conn.prepareStatement(command)) {
 
             stmt.setInt(1, chosenId);
 
             int linhasAlteradas = stmt.executeUpdate();
 
             if (linhasAlteradas != 0) {
-                
+
                 return true;
 
-            }
-            else {
+            } else {
 
                 return false;
 

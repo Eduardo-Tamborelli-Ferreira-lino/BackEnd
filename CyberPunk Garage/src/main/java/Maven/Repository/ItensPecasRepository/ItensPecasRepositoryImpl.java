@@ -1,4 +1,4 @@
-package Maven.Repository.Repository;
+package Maven.Repository.ItensPecasRepository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,7 +8,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import Maven.Model.ItensPecas;
-import Maven.Repository.Interface.ItensPecasRepository;
 import Maven.Util.ConnectionFactory;
 
 public class ItensPecasRepositoryImpl implements ItensPecasRepository {
@@ -170,18 +169,17 @@ public class ItensPecasRepositoryImpl implements ItensPecasRepository {
                 """;
 
         try (Connection conn = ConnectionFactory.conectar();
-        PreparedStatement stmt = conn.prepareStatement(command)) {
+                PreparedStatement stmt = conn.prepareStatement(command)) {
 
             stmt.setInt(1, chosenId);
 
             int linhasAlteradas = stmt.executeUpdate();
 
             if (linhasAlteradas != 0) {
-                
+
                 return true;
 
-            }
-            else {
+            } else {
 
                 return false;
 

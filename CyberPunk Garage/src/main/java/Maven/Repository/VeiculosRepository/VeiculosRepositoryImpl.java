@@ -1,4 +1,4 @@
-package Maven.Repository.Repository;
+package Maven.Repository.VeiculosRepository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,10 +8,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import Maven.Model.Veiculos;
-import Maven.Repository.Interface.VeiculosRepository;
 import Maven.Util.ConnectionFactory;
 
-public class VeiculosRepositoryImpl implements VeiculosRepository{
+public class VeiculosRepositoryImpl implements VeiculosRepository {
 
     @Override
     public Veiculos save(Veiculos veiculos) throws SQLException {
@@ -25,8 +24,7 @@ public class VeiculosRepositoryImpl implements VeiculosRepository{
                 """;
 
         try (Connection conn = ConnectionFactory.conectar();
-        PreparedStatement stmt = conn.prepareStatement
-        (command, Statement.RETURN_GENERATED_KEYS)) {
+                PreparedStatement stmt = conn.prepareStatement(command, Statement.RETURN_GENERATED_KEYS)) {
 
             stmt.setString(1, veiculos.getModelo());
             stmt.setString(2, veiculos.getPlaca());
@@ -37,13 +35,12 @@ public class VeiculosRepositoryImpl implements VeiculosRepository{
             ResultSet rs = stmt.getGeneratedKeys();
 
             if (rs.next()) {
-                
+
                 veiculos.setId(rs.getInt(1));
 
                 return veiculos;
-            }
-            else {
-                
+            } else {
+
                 throw new SQLException("Erro ao cadastrar cliente. ");
 
             }
@@ -54,14 +51,14 @@ public class VeiculosRepositoryImpl implements VeiculosRepository{
     public Veiculos updateVeiculos(Veiculos veiculos) throws SQLException {
         String command = """
                 UPDATE veiculos
-                SET 
+                SET
                 modelo = ?,
                 placa = ?
                 WHERE id = ?
                 """;
 
         try (Connection conn = ConnectionFactory.conectar();
-        PreparedStatement stmt = conn.prepareStatement(command)) {
+                PreparedStatement stmt = conn.prepareStatement(command)) {
 
             stmt.setString(1, veiculos.getModelo());
             stmt.setString(2, veiculos.getPlaca());
@@ -74,8 +71,9 @@ public class VeiculosRepositoryImpl implements VeiculosRepository{
 
     @Override
     public ArrayList<Veiculos> findAll() throws SQLException {
-         
-        ArrayList<Veiculos>  veiculos = new ArrayList<>();;
+
+        ArrayList<Veiculos> veiculos = new ArrayList<>();
+        ;
 
         String command = """
                 SELECT
@@ -87,23 +85,22 @@ public class VeiculosRepositoryImpl implements VeiculosRepository{
                 """;
 
         try (Connection conn = ConnectionFactory.conectar();
-        PreparedStatement stmt = conn.prepareStatement(command)) {
+                PreparedStatement stmt = conn.prepareStatement(command)) {
 
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
-                
+
                 var veiculo = new Veiculos(
-                    rs.getInt("id"),
-                    rs.getString("modelo"),
-                    rs.getString("placa"),
-                    rs.getInt("cliente_id")
-                );
+                        rs.getInt("id"),
+                        rs.getString("modelo"),
+                        rs.getString("placa"),
+                        rs.getInt("cliente_id"));
 
                 veiculos.add(veiculo);
-                
+
             }
-                
+
             return veiculos;
         }
     }
@@ -124,27 +121,25 @@ public class VeiculosRepositoryImpl implements VeiculosRepository{
                 """;
 
         try (Connection conn = ConnectionFactory.conectar();
-        PreparedStatement stmt = conn.prepareStatement(command)) {
+                PreparedStatement stmt = conn.prepareStatement(command)) {
 
             stmt.setInt(1, chosenId);
 
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                
+
                 var findVeiculo = new Veiculos(
-                    rs.getInt("id"),
-                    rs.getString("modelo"),
-                    rs.getString("placa"),
-                    rs.getInt("cliente_id")
-                );
+                        rs.getInt("id"),
+                        rs.getString("modelo"),
+                        rs.getString("placa"),
+                        rs.getInt("cliente_id"));
 
                 veiculo = findVeiculo;
 
                 return veiculo;
 
-            }
-            else {
+            } else {
 
                 throw new SQLException("Cliente não encontrado. ");
 
@@ -161,18 +156,17 @@ public class VeiculosRepositoryImpl implements VeiculosRepository{
                 """;
 
         try (Connection conn = ConnectionFactory.conectar();
-        PreparedStatement stmt = conn.prepareStatement(command)) {
+                PreparedStatement stmt = conn.prepareStatement(command)) {
 
             stmt.setInt(1, chosenId);
 
             int linhasAlteradas = stmt.executeUpdate();
 
             if (linhasAlteradas != 0) {
-                
+
                 return true;
 
-            }
-            else {
+            } else {
 
                 return false;
 
