@@ -1,36 +1,36 @@
 package org.example;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
     static Scanner SC = new Scanner(System.in);
+
     public static void main(String[] args) throws SQLException {
         int qtd = 0;
-        while (true){
+        while (true) {
             inicio(qtd);
         }
     }
 
-    public static void inicio(int qtd) throws SQLException{
+    public static void inicio(int qtd) throws SQLException {
         qtd = quantidadeCadastrada(qtd);
         System.out.println(" Quantidade de cadastros: " + qtd +
                 """
-                \n-----------------------------------
-                1 - Cadastrar Contato
-                2 - Atualizar um Contato
-                3 - Deletar Contato
-                4 - Buscar Contato
-                5 - Listar Todos
-                6 - Quantidade Cadastrada
-                Digite a opção desejada:
-                """);
+                        \n-----------------------------------
+                        1 - Cadastrar Contato
+                        2 - Atualizar um Contato
+                        3 - Deletar Contato
+                        4 - Buscar Contato
+                        5 - Listar Todos
+                        6 - Quantidade Cadastrada
+                        Digite a opção desejada:
+                        """);
         int opcao = SC.nextInt();
         SC.nextLine();
 
-        switch (opcao){
+        switch (opcao) {
             case 1: {
                 cadastrarContato();
                 break;
@@ -39,76 +39,73 @@ public class Main {
                 atualizarContato();
                 break;
             }
-            case 3:{
+            case 3: {
                 deletarContato();
                 break;
             }
-            case 4:{
+            case 4: {
                 buscarContato();
                 break;
             }
-            case 5:{
+            case 5: {
                 listarTodos();
                 break;
             }
-            case 6:{
+            case 6: {
                 quantidadeCadastrada(qtd);
                 break;
             }
-            default:{
+            default: {
                 System.out.println("Opção selecionada incorretamente");
             }
         }
     }
 
-    public static void cadastrarContato(){
+    public static void cadastrarContato() {
         System.out.println("Digite o nome de contato: ");
         String nome = SC.nextLine();
         System.out.println("Digite o número de contato: ");
         String numero = SC.nextLine();
         var contatoCriado = new ContatoDao();
-        try{
+        try {
             String contatoNome = contatoCriado.verificarNome(nome);
-            if (contatoNome == nome){
+            if (contatoNome == nome) {
                 System.out.println("""
                         Nome já existente.
-                        Você deseja inserir mesmo assim? 
+                        Você deseja inserir mesmo assim?
                         1 - Sim
-                        2 - Não 
+                        2 - Não
                         """);
                 int opcao = SC.nextInt();
-                while (true){
-                    switch (opcao){
-                        case 1:{
+                while (true) {
+                    switch (opcao) {
+                        case 1: {
                             var dao = new ContatoDao();
-                            try{
-                                dao.salvar(new Contato(nome,numero));
-                                var contato = new ContatoDao();
+                            try {
+                                dao.salvar(new Contato(nome, numero));
                                 System.out.println("Contato salvo com sucesso.");
                                 return;
-                            }catch (SQLException e){
+                            } catch (SQLException e) {
                                 System.out.println("Erro ao acessar o banco de dados");
                                 e.printStackTrace();
                             }
                         }
-                        case 2:{
+                        case 2: {
                             System.out.println("Ok vamos retornar ao inicio.");
                             return;
                         }
-                        default:{
+                        default: {
                             System.out.println("Você inseriu o número errado");
                         }
                     }
                 }
-            }
-            else {
+            } else {
                 var dao = new ContatoDao();
-                try{
-                    dao.salvar(new Contato(nome,numero));
-                    var contato = new ContatoDao();
+                try {
+                    dao.salvar(new Contato(nome, numero));
                     System.out.println("Contato salvo com sucesso.");
                     return;
-                }catch (SQLException e){
+                } catch (SQLException e) {
                     System.out.println("Erro ao acessar o banco de dados");
                     e.printStackTrace();
                 }
@@ -119,38 +116,37 @@ public class Main {
         }
     }
 
-    public static void atualizarContato() throws SQLException{
-        ArrayList <Contato> contatos = new ArrayList<>();
+    public static void atualizarContato() throws SQLException {
+        ArrayList<Contato> contatos = new ArrayList<>();
         var contatosDao = new ContatoDao();
-        while(true){
+        while (true) {
             contatos = contatosDao.buscarTodos();
-            if (contatos == null || contatos.isEmpty()){
+            if (contatos == null || contatos.isEmpty()) {
                 System.out.println("""
-                        Nenhum contato está cadastrado no sistema, 
+                        Nenhum contato está cadastrado no sistema,
                         Cadastre um contato antes de querer deletar.
                         """);
                 return;
-            }
-            else{
+            } else {
                 for (int i = 0; i < contatos.size(); i++) {
                     System.out.println(contatos.get(i));
                 }
                 while (true) {
                     System.out.println("Digite o id de contato que deseja atualizar");
                     int id = SC.nextInt();
-                    for (Contato contato : contatos){
-                        if (contato.getId() == id){
+                    for (Contato contato : contatos) {
+                        if (contato.getId() == id) {
                             System.out.println(contato.toString());
                             System.out.println("Deseja alterar o numero ou nome? ");
                             System.out.println("""
-                                1 - Nome
-                                2 - Número
-                                3 - Trocar nome e número
-                                
-                                Caso queria retornar digite 0
-                                
-                                Digite a opção desejada.
-                                """);
+                                    1 - Nome
+                                    2 - Número
+                                    3 - Trocar nome e número
+
+                                    Caso queria retornar digite 0
+
+                                    Digite a opção desejada.
+                                    """);
                             int opcao = SC.nextInt();
                             switch (opcao) {
                                 case 1: {
@@ -210,46 +206,43 @@ public class Main {
                         }
                     }
                     System.out.println("""
-                               ID não encontrado.
-                               Coloque o ID correto.
-                               """);
+                            ID não encontrado.
+                            Coloque o ID correto.
+                            """);
                 }
             }
         }
     }
 
-    public static void deletarContato(){
-        ArrayList <Contato> contatos = new ArrayList<>();
+    public static void deletarContato() {
+        ArrayList<Contato> contatos = new ArrayList<>();
         var contatosDao = new ContatoDao();
         try {
             contatos = contatosDao.buscarTodos();
-            if (contatos == null || contatos.isEmpty()){
+            if (contatos == null || contatos.isEmpty()) {
                 System.out.println("""
-                        Nenhum contato está cadastrado no sistema, 
+                        Nenhum contato está cadastrado no sistema,
                         Cadastre um contato antes de querer deletar.
                         """);
                 return;
-            }
-            else {
+            } else {
                 for (int i = 0; i < contatos.size(); i++) {
                     System.out.println(contatos.get(i));
                 }
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             System.out.println("Erro ao acessar o banco de dados");
             e.printStackTrace();
         }
         System.out.println("""
-                        Insira o id do contato que deseja deletar:
-                        Ou digite 0 para retornar
-                        """);
+                Insira o id do contato que deseja deletar:
+                Ou digite 0 para retornar
+                """);
         int id = SC.nextInt();
-        if(id == 0 ){
+        if (id == 0) {
             System.out.println("Retornando...");
             return;
-        }
-        else {
+        } else {
             System.out.println(" Você tem certeza que deseja deletar o contato: ");
             int i = 0;
             for (Contato contato : contatos) {
@@ -260,7 +253,7 @@ public class Main {
                 i++;
             }
             System.out.println("""
-                    Se realmente deseja deletar digite: 
+                    Se realmente deseja deletar digite:
                     1 - Sim!
                     2 - Não!
                     """);
@@ -299,78 +292,56 @@ public class Main {
         }
     }
 
-    public static void buscarContato(){
-        while (true){
+    public static void buscarContato() {
+        while (true) {
             System.out.println("""
-                Deseja buscar por: 
-                1 - ID
-                2 - NOME 
-                3 - NUMERO
-                4 - Buscar todos
-                Caso queria retornar digite 0
-                """);
+                    Deseja buscar por:
+                    1 - ID
+                    2 - NOME
+                    3 - NUMERO
+                    4 - Buscar todos
+                    Caso queria retornar digite 0
+                    """);
             int opcao = SC.nextInt();
-            switch (opcao){
-                case 1:{
+            switch (opcao) {
+                case 1: {
                     buscarContatoPorId();
                     break;
                 }
-                case 2:{
+                case 2: {
                     buscarContatoPorNome();
                     break;
                 }
-                case 3:{
+                case 3: {
                     buscarContatoPorNumero();
                     break;
                 }
-                case 4:{
+                case 4: {
                     buscarTodos();
                     break;
                 }
-                case 0:{
+                case 0: {
                     System.out.println("Ok, estamos retornando...");
                     return;
                 }
-                default:{
+                default: {
                     System.out.println("Opção escolhida incorretamente");
                 }
             }
         }
     }
 
-    public static void buscarContatoPorId(){
+    public static void buscarContatoPorId() {
         System.out.println("Insira o id do contato que deseja buscar: ");
         int id = SC.nextInt();
         var dao = new ContatoDao();
-        try{
+        try {
             Contato contato = dao.buscarContatoPorId(id);
-            if (contato != null){
+            if (contato != null) {
                 System.out.println("ID: " + contato.getId());
                 System.out.println("Nome: " + contato.getNome());
                 System.out.println("Número: " + contato.getNumero());
-            }
-            else{
-                System.out.println("Contato não encontrado.");
-            }
-        }catch (SQLException e){
-            System.out.println("Erro ao acessar o banco de dados");
-            e.printStackTrace();
-        }
-    }
-
-    public static void buscarContatoPorNome(){
-        System.out.println("Insira o nome do contato que você deseja buscar: ");
-        SC.nextLine();
-        String nome = SC.nextLine();
-        var dao = new ContatoDao();
-        try{
-            Contato contato = dao.buscarContatoPorNome(nome);
-            if (contato != null){
-                System.out.println("ID: " + contato.getId());
-                System.out.println("Nome: " + contato.getNome());
-                System.out.println("Número: " + contato.getNumero());
-            }
-            else{
+            } else {
                 System.out.println("Contato não encontrado.");
             }
         } catch (SQLException e) {
@@ -379,130 +350,144 @@ public class Main {
         }
     }
 
-    public static void buscarContatoPorNumero(){
-        System.out.println("Insira o número do contato que deseja buscar: ");
+    public static void buscarContatoPorNome() {
+        System.out.println("Insira o nome do contato que você deseja buscar: ");
         SC.nextLine();
-        String numero = SC.nextLine();
+        String nome = SC.nextLine();
         var dao = new ContatoDao();
-        try{
-            Contato contato = dao.buscarContatoPorNumero(numero);
-            if (contato != null){
+        try {
+            Contato contato = dao.buscarContatoPorNome(nome);
+            if (contato != null) {
                 System.out.println("ID: " + contato.getId());
                 System.out.println("Nome: " + contato.getNome());
                 System.out.println("Número: " + contato.getNumero());
-            }
-            else {
+            } else {
                 System.out.println("Contato não encontrado.");
             }
-        }catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println("Erro ao acessar o banco de dados");
             e.printStackTrace();
         }
     }
 
-    public static void buscarTodos(){
+    public static void buscarContatoPorNumero() {
+        System.out.println("Insira o número do contato que deseja buscar: ");
+        SC.nextLine();
+        String numero = SC.nextLine();
+        var dao = new ContatoDao();
+        try {
+            Contato contato = dao.buscarContatoPorNumero(numero);
+            if (contato != null) {
+                System.out.println("ID: " + contato.getId());
+                System.out.println("Nome: " + contato.getNome());
+                System.out.println("Número: " + contato.getNumero());
+            } else {
+                System.out.println("Contato não encontrado.");
+            }
+        } catch (SQLException e) {
+            System.out.println("Erro ao acessar o banco de dados");
+            e.printStackTrace();
+        }
+    }
+
+    public static void buscarTodos() {
         System.out.println("""
                 Você deseja buscar todos por :
                 1 - Nome
                 2 - Número
                 3 - Buscar por todos
                 4 - Buscar com IN
-                
+
                 Caso deseje retornar digite 0
                 """);
         int opcao = SC.nextInt();
         SC.nextLine();
-        switch (opcao){
-            case 1:{
+        switch (opcao) {
+            case 1: {
                 buscarTodosNome();
                 break;
             }
-            case 2:{
+            case 2: {
                 buscarTodosNumero();
                 break;
             }
-            case 3:{
+            case 3: {
                 buscarTodosTudo();
                 break;
             }
-            case 4:{
+            case 4: {
                 buscarPorIn();
                 break;
             }
-            default:{
+            default: {
                 System.out.println("Opção escolhida incorretamente");
                 buscarTodos();
             }
         }
     }
 
-    public static void buscarTodosNome(){
-        ArrayList <Contato> contatoNomes = new ArrayList<>();
+    public static void buscarTodosNome() {
+        ArrayList<Contato> contatoNomes = new ArrayList<>();
         System.out.println("""
-                        Insira o nome que deseja procurar
-                        """);
+                Insira o nome que deseja procurar
+                """);
         String nome = SC.nextLine();
         var dao = new ContatoDao();
-        try{
+        try {
             contatoNomes = dao.buscarTodosNome(nome);
-            if (contatoNomes == null || contatoNomes.isEmpty()){
+            if (contatoNomes == null || contatoNomes.isEmpty()) {
                 System.out.println("""
-                        Nenhum contato está cadastrado no sistema, 
+                        Nenhum contato está cadastrado no sistema,
                         Cadastre um contato antes de querer deletar.
                         """);
-            }
-            else {
+            } else {
                 System.out.println("Aqui está a lista de contatos:");
-                for (Contato contato : contatoNomes){
+                for (Contato contato : contatoNomes) {
                     System.out.println(contato.toString());
                 }
             }
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println("Erro ao acessar o banco de dados");
             e.printStackTrace();
         }
     }
 
-    public static void buscarTodosNumero(){
-        ArrayList <Contato> contatoNomes = new ArrayList<>();
+    public static void buscarTodosNumero() {
+        ArrayList<Contato> contatoNomes = new ArrayList<>();
         System.out.println("""
-                        Insira o número que deseja procurar
-                        """);
+                Insira o número que deseja procurar
+                """);
         String numero = SC.nextLine();
         var dao = new ContatoDao();
-        try{
+        try {
             contatoNomes = dao.buscarTodosNumero(numero);
-            if (contatoNomes == null || contatoNomes.isEmpty()){
+            if (contatoNomes == null || contatoNomes.isEmpty()) {
                 System.out.println("""
-                        Nenhum contato está cadastrado no sistema, 
+                        Nenhum contato está cadastrado no sistema,
                         Cadastre um contato antes de querer deletar.
                         """);
-            }
-            else {
+            } else {
                 System.out.println("Aqui está a lista de contatos:");
-                for (Contato contato : contatoNomes){
+                for (Contato contato : contatoNomes) {
                     System.out.println(contato.toString());
                 }
             }
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println("Erro ao acessar o banco de dados");
             e.printStackTrace();
         }
     }
 
-    public static void buscarTodosTudo(){
+    public static void buscarTodosTudo() {
         ArrayList<Contato> contatos = new ArrayList<>();
         System.out.println("Vamos iniciar as buscas");
         var dao = new ContatoDao();
         try {
             contatos = dao.buscarTodos();
-            if (contatos == null || contatos.isEmpty()){
+            if (contatos == null || contatos.isEmpty()) {
                 System.out.println("Nenhum contato encontrado");
-            }
-            else{
-                for (int i = 0; i < contatos.size(); i++){
+            } else {
+                for (int i = 0; i < contatos.size(); i++) {
                     System.out.println(contatos.get(i));
                 }
             }
@@ -512,7 +497,7 @@ public class Main {
         }
     }
 
-    public static void buscarPorIn(){
+    public static void buscarPorIn() {
         ArrayList<Contato> contatos = new ArrayList<>();
         ArrayList<Integer> contatosId = new ArrayList<>();
         var dao = new ContatoDao();
@@ -523,8 +508,8 @@ public class Main {
                 System.out.println("Informe o ID do " + i + "° contato");
                 contatosId.add(SC.nextInt());
             }
-            contatos = dao.buscar(ids,contatosId);
-            for (Contato contato : contatos){
+            contatos = dao.buscar(ids, contatosId);
+            for (Contato contato : contatos) {
                 System.out.println(contato.toString());
             }
         } catch (SQLException e) {
@@ -533,53 +518,48 @@ public class Main {
         }
     }
 
-    public static void listarTodos(){
+    public static void listarTodos() {
         ArrayList<Contato> contatos = new ArrayList<>();
         var dao = new ContatoDao();
-        try{
+        try {
             contatos = dao.buscarTodos();
-            if (contatos == null || contatos.isEmpty()){
+            if (contatos == null || contatos.isEmpty()) {
                 System.out.println("""
-                        Nenhum contato está cadastrado no sistema, 
+                        Nenhum contato está cadastrado no sistema,
                         Cadastre um contato antes de querer deletar.
                         """);
-            }
-            else{
+            } else {
                 System.out.println("Contatos salvos: ");
                 for (int i = 0; i < contatos.size(); i++) {
                     System.out.println(contatos.get(i));
                 }
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             System.out.println("Erro ao acessar o banco de dados");
             e.printStackTrace();
         }
     }
 
-    public static int quantidadeCadastrada(int qtd){
+    public static int quantidadeCadastrada(int qtd) {
         int acesso = 0;
         System.out.println("Estamos somando os cadastrados...");
         var dao = new ContatoDao();
-        try{
+        try {
             qtd = dao.quantidadeTotal();
-            if (qtd == 0 ){
+            if (qtd == 0) {
                 System.out.println("""
-                        Nenhum contato está cadastrado no sistema, 
+                        Nenhum contato está cadastrado no sistema,
                         Cadastre um contato antes de querer deletar.
                         """);
                 return qtd;
-            }
-            else {
-                if (acesso == 0){
+            } else {
+                if (acesso == 0) {
                     return qtd;
-                }
-                else {
+                } else {
                     System.out.println("Quantidade de contatos cadastrados é: " + qtd);
                 }
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             System.out.println("Erro ao acessar o banco de dados");
             e.printStackTrace();
         }

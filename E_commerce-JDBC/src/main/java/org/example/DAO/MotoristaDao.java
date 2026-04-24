@@ -2,7 +2,6 @@ package org.example.DAO;
 
 import org.example.Classes.Motorista;
 import org.example.Conexão.Conexao;
-import org.example.DTO.TotalEntregasMotoristaDTO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,7 +11,7 @@ import java.util.ArrayList;
 
 public class MotoristaDao {
 
-    public void cadastrarMotorista(String nome, String cnh, String veiculo, String cidadeBase)throws SQLException {
+    public void cadastrarMotorista(String nome, String cnh, String veiculo, String cidadeBase) throws SQLException {
         String command = """
                 INSERT INTO motorista(
                 nome,
@@ -22,7 +21,7 @@ public class MotoristaDao {
                 VALUES
                 (?, ?, ?, ?)
                 """;
-        try (Connection conn = Conexao.conectar()){
+        try (Connection conn = Conexao.conectar()) {
             PreparedStatement stmt = conn.prepareStatement(command);
             stmt.setString(1, nome);
             stmt.setString(2, cnh);
@@ -32,8 +31,8 @@ public class MotoristaDao {
         }
     }
 
-    public ArrayList<Motorista> listarMotorista()throws SQLException{
-        ArrayList<Motorista>motoristas = new ArrayList<>();
+    public ArrayList<Motorista> listarMotorista() throws SQLException {
+        ArrayList<Motorista> motoristas = new ArrayList<>();
         String command = """
                 SELECT id,
                 nome,
@@ -42,17 +41,16 @@ public class MotoristaDao {
                 cidade_base
                 FROM motorista
                 """;
-        try (Connection conn = Conexao.conectar()){
+        try (Connection conn = Conexao.conectar()) {
             PreparedStatement stmt = conn.prepareStatement(command);
             ResultSet rs = stmt.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 motoristas.add(new Motorista(
                         rs.getInt("id"),
                         rs.getString("nome"),
                         rs.getString("cnh"),
                         rs.getString("veiculo"),
-                        rs.getString("cidade_base")
-                ));
+                        rs.getString("cidade_base")));
             }
             return motoristas;
         }

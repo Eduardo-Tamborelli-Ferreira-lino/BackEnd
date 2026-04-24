@@ -11,9 +11,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.naming.spi.DirStateFactory.Result;
-
-public class ProdutoRepositoryImpl implements ProdutoRepository{
+public class ProdutoRepositoryImpl implements ProdutoRepository {
 
     @Override
     public Produto save(Produto produto) throws SQLException {
@@ -29,8 +27,7 @@ public class ProdutoRepositoryImpl implements ProdutoRepository{
                 """;
 
         try (Connection conn = ConexaoBanco.conectar();
-        PreparedStatement stmt = conn.prepareStatement
-        (command, Statement.RETURN_GENERATED_KEYS)) {
+                PreparedStatement stmt = conn.prepareStatement(command, Statement.RETURN_GENERATED_KEYS)) {
 
             stmt.setString(1, produto.getNome());
             stmt.setDouble(2, produto.getPreco());
@@ -54,7 +51,7 @@ public class ProdutoRepositoryImpl implements ProdutoRepository{
 
     @Override
     public List<Produto> findAll() throws SQLException {
-        List <Produto> produtos = new ArrayList<>();
+        List<Produto> produtos = new ArrayList<>();
         String command = """
                 SELECT
                 id,
@@ -66,19 +63,19 @@ public class ProdutoRepositoryImpl implements ProdutoRepository{
                 """;
 
         try (Connection conn = ConexaoBanco.conectar();
-        PreparedStatement stmt = conn.prepareStatement (command)) {
+                PreparedStatement stmt = conn.prepareStatement(command)) {
 
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
-                
+
                 var produto = new Produto(
 
-                    rs.getInt("id"),
-                    rs.getString("nome"),
-                    rs.getDouble("preco"),
-                    rs.getInt("quantidade"),
-                    rs.getString("categoria")
+                        rs.getInt("id"),
+                        rs.getString("nome"),
+                        rs.getDouble("preco"),
+                        rs.getInt("quantidade"),
+                        rs.getString("categoria")
 
                 );
 
@@ -108,33 +105,33 @@ public class ProdutoRepositoryImpl implements ProdutoRepository{
                 """;
 
         try (Connection conn = ConexaoBanco.conectar();
-        PreparedStatement stmt = conn.prepareStatement(command)) {
+                PreparedStatement stmt = conn.prepareStatement(command)) {
 
             stmt.setInt(1, id);
 
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                
+
                 var produtoEncontrado = new Produto(
 
-                    rs.getInt("id"),
-                    rs.getString("nome"),
-                    rs.getDouble("preco"),
-                    rs.getInt("quantidade"),
-                    rs.getString("categoria")
+                        rs.getInt("id"),
+                        rs.getString("nome"),
+                        rs.getDouble("preco"),
+                        rs.getInt("quantidade"),
+                        rs.getString("categoria")
 
                 );
 
                 return produto = produtoEncontrado;
 
             }
-            
+
             else {
 
                 throw new SQLException("Produto não existe no banco de dados");
 
-            }  
+            }
         }
     }
 
@@ -143,7 +140,7 @@ public class ProdutoRepositoryImpl implements ProdutoRepository{
 
         String command = """
                 UPDATE produto
-                SET 
+                SET
                 nome = ?,
                 preco = ?,
                 quantidade = ?,
@@ -152,7 +149,7 @@ public class ProdutoRepositoryImpl implements ProdutoRepository{
                 """;
 
         try (Connection conn = ConexaoBanco.conectar();
-        PreparedStatement stmt = conn.prepareStatement(command)) {
+                PreparedStatement stmt = conn.prepareStatement(command)) {
 
             stmt.setString(1, produto.getNome());
             stmt.setDouble(2, produto.getPreco());
@@ -168,14 +165,14 @@ public class ProdutoRepositoryImpl implements ProdutoRepository{
 
     @Override
     public boolean deleteById(int id) throws SQLException {
-        
+
         String command = """
                 DELETE FROM produto
                 WHERE id = ?
                 """;
 
         try (Connection conn = ConexaoBanco.conectar();
-        PreparedStatement stmt = conn.prepareStatement(command)) {
+                PreparedStatement stmt = conn.prepareStatement(command)) {
 
             stmt.setInt(1, id);
             int linhasAlteradas = stmt.executeUpdate();

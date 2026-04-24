@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 public class EntregaDao {
 
-    public void gerarEntrega(Entrega entrega)throws SQLException {
+    public void gerarEntrega(Entrega entrega) throws SQLException {
         String command = """
                 INSERT INTO entrega(
                 pedido_id,
@@ -28,7 +28,7 @@ public class EntregaDao {
                 """;
         StatusPedido statusPedido;
         try (Connection conn = Conexao.conectar();
-             PreparedStatement stmt = conn.prepareStatement(command)){
+                PreparedStatement stmt = conn.prepareStatement(command)) {
             stmt.setInt(1, entrega.getPedidoId());
             stmt.setInt(2, entrega.getMotoristaId());
             stmt.setTimestamp(3, entrega.getDataSaida());
@@ -38,8 +38,8 @@ public class EntregaDao {
         }
     }
 
-    public ArrayList<Entrega> listarEntregas()throws SQLException{
-        ArrayList<Entrega>entregas = new ArrayList<>();
+    public ArrayList<Entrega> listarEntregas() throws SQLException {
+        ArrayList<Entrega> entregas = new ArrayList<>();
         String command = """
                 SELECT
                 id,
@@ -50,38 +50,37 @@ public class EntregaDao {
                 status
                 FROM entrega
                 """;
-        try (Connection conn = Conexao.conectar()){
+        try (Connection conn = Conexao.conectar()) {
             PreparedStatement stmt = conn.prepareStatement(command);
             ResultSet rs = stmt.executeQuery();
-            while (rs.next()){
+            while (rs.next()) {
                 entregas.add(new Entrega(
                         rs.getInt("id"),
                         rs.getInt("pedido_id"),
                         rs.getInt("motorista_id"),
                         rs.getTimestamp("data_saida"),
                         rs.getString("data_entrega"),
-                        StatusPedido.getDeliveryStatus(rs.getString("status"))
-                ));
+                        StatusPedido.getDeliveryStatus(rs.getString("status"))));
             }
             return entregas;
         }
     }
 
-    public void atualizarEntrega(StatusPedido status, int id) throws SQLException{
+    public void atualizarEntrega(StatusPedido status, int id) throws SQLException {
         String command = """
                 UPDATE entrega
                 set status = ?
                 WHERE id = ?
                 """;
         try (Connection conn = Conexao.conectar();
-        PreparedStatement stmt = conn.prepareStatement(command)){
-            stmt.setString(1, status);
+                PreparedStatement stmt = conn.prepareStatement(command)) {
+            stmt.setObject(1, status);
             stmt.setInt(2, id);
             stmt.executeUpdate();
         }
     }
 
-    public ArrayList<EntregaDetalhadaDTO> listarECM ()throws SQLException{
+    public ArrayList<EntregaDetalhadaDTO> listarECM() throws SQLException {
         ArrayList<EntregaDetalhadaDTO> entregas = new ArrayList<>();
         String command = """
                 SELECT
@@ -97,23 +96,22 @@ public class EntregaDao {
                 INNER JOIN motorista m ON e.motorista_id = m.id
                 """;
         try (Connection conn = Conexao.conectar();
-        PreparedStatement stmt = conn.prepareStatement(command)){
+                PreparedStatement stmt = conn.prepareStatement(command)) {
             ResultSet rs = stmt.executeQuery();
-            while (rs.next()){
+            while (rs.next()) {
                 EntregaDetalhadaDTO dto = new EntregaDetalhadaDTO(
                         rs.getInt("id"),
                         rs.getString("nome_cliente"),
                         rs.getString("nome_motorista"),
                         rs.getString("status"),
-                        rs.getString("data_saida")
-                   );
+                        rs.getString("data_saida"));
                 entregas.add(dto);
             }
         }
         return entregas;
     }
 
-    public ArrayList<TotalEntregasMotoristaDTO> totalEntregaMotorista()throws SQLException{
+    public ArrayList<TotalEntregasMotoristaDTO> totalEntregaMotorista() throws SQLException {
         ArrayList<TotalEntregasMotoristaDTO> dto = new ArrayList<>();
         String command = """
                 SELECT
@@ -125,19 +123,18 @@ public class EntregaDao {
                 ORDER BY total_entrega DESC
                 """;
         try (Connection conn = Conexao.conectar();
-             PreparedStatement stmt = conn.prepareStatement(command)){
+                PreparedStatement stmt = conn.prepareStatement(command)) {
             ResultSet rs = stmt.executeQuery();
-            while (rs.next()){
+            while (rs.next()) {
                 dto.add(new TotalEntregasMotoristaDTO(
                         rs.getString("nome_motorista"),
-                        rs.getInt("total_entrega")
-                ));
+                        rs.getInt("total_entrega")));
             }
         }
         return dto;
     }
 
-    public ArrayList<MaiorVolumeEntregueDTO> MaiorVolumeEntregue()throws SQLException{
+    public ArrayList<MaiorVolumeEntregueDTO> MaiorVolumeEntregue() throws SQLException {
         ArrayList<MaiorVolumeEntregueDTO> dto = new ArrayList<>();
         String command = """
                 SELECT
@@ -151,14 +148,13 @@ public class EntregaDao {
                 ORDER BY valor DESC
                 """;
         try (Connection conn = Conexao.conectar();
-             PreparedStatement stmt = conn.prepareStatement(command)){
+                PreparedStatement stmt = conn.prepareStatement(command)) {
             ResultSet rs = stmt.executeQuery();
-            while (rs.next()){
+            while (rs.next()) {
                 dto.add(new MaiorVolumeEntregueDTO(
                         rs.getString("nome_cliente"),
                         rs.getInt("id_cliente"),
-                        rs.getDouble("valor")
-                ));
+                        rs.getDouble("valor")));
             }
         }
         return dto;

@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import org.example.Classes.Cliente;
 import org.example.Classes.Motorista;
-import org.example.Classes.Historico;
 import org.example.Classes.Pedido;
 import org.example.Classes.Entrega;
 import org.example.DAO.EntregaDao;
@@ -28,13 +27,14 @@ public class Main {
     static final EntregaDao ENTREGA_DAO = new EntregaDao();
     static final HistoricoDao HISTORICO_DAO = new HistoricoDao();
     static Scanner SC = new Scanner(System.in);
+
     public static void main(String[] args) {
         inicio();
     }
 
-    public static void inicio(){
+    public static void inicio() {
         System.out.println("Olá seja bem-vindo ao nosso E-Commerce");
-        while (true){
+        while (true) {
             System.out.println("""
                     1 - Cadastrar Cliente
                     2 - Cadastrar Motorista
@@ -55,44 +55,44 @@ public class Main {
                     0 - Sair
                     """);
             int opcao = SC.nextInt();
-            switch (opcao){
-                case 1:{
+            switch (opcao) {
+                case 1: {
                     cadastrarCliente();
                     break;
                 }
-                case 2:{
+                case 2: {
                     cadastrarMotorista();
                     break;
                 }
-                case 3:{
+                case 3: {
                     criarPedido();
                     break;
                 }
-                case 4:{
+                case 4: {
                     atribuirPedido();
                     break;
                 }
-                case 5:{
+                case 5: {
                     registrarEntrega();
                     break;
                 }
-                case 6:{
+                case 6: {
                     atualizarEntrega();
                     break;
                 }
-                case 7:{
+                case 7: {
                     listarECM();
                     break;
                 }
-                case 8:{
+                case 8: {
                     listarTEM();
                     break;
                 }
-                case 9:{
+                case 9: {
                     listarMV();
                     break;
                 }
-                case 10:{
+                case 10: {
                     listarPPE();
                     break;
                 }
@@ -100,8 +100,8 @@ public class Main {
         }
     }
 
-    public static void cadastrarCliente(){
-        while(true) {
+    public static void cadastrarCliente() {
+        while (true) {
             System.out.println("""
                     Você quer mesmo adicionar um novo cliente?
                     1 - Sim
@@ -134,23 +134,23 @@ public class Main {
                 case 2: {
                     return;
                 }
-                default:{
+                default: {
                     System.out.println("Escolha uma opção valida.");
                 }
             }
         }
     }
 
-    public static void cadastrarMotorista(){
-        while (true){
+    public static void cadastrarMotorista() {
+        while (true) {
             System.out.println("""
                     Você quer mesmo adicionar um novo Motorista?
                     1 - Sim
                     2 - Não
                     """);
             int opcao = SC.nextInt();
-            switch (opcao){
-                case 1:{
+            switch (opcao) {
+                case 1: {
                     System.out.println("Insira o nome do Motorista: ");
                     SC.nextLine();
                     String nome = SC.nextLine();
@@ -161,7 +161,7 @@ public class Main {
                     System.out.println("Insira o Cidade Base do Motorista: ");
                     String cidadeBase = SC.nextLine();
                     try {
-                        MOTORISTA_DAO.cadastrarMotorista(nome,cnh,veiculo,cidadeBase);
+                        MOTORISTA_DAO.cadastrarMotorista(nome, cnh, veiculo, cidadeBase);
                         System.out.println("Cadastro realizado com sucesso");
                         return;
                     } catch (SQLException e) {
@@ -170,25 +170,25 @@ public class Main {
                         return;
                     }
                 }
-                case 2:{
+                case 2: {
                     return;
                 }
-                default:{
+                default: {
                     System.out.println("Escolha uma opção valida.");
                 }
             }
         }
     }
 
-    public static void criarPedido (){
-        while (true){
+    public static void criarPedido() {
+        while (true) {
             System.out.println("""
                     Você quer mesmo adicionar um novo Pedido?
                     1 - Sim
                     2 - Não
                     """);
             int opcao = SC.nextInt();
-            switch (opcao){
+            switch (opcao) {
                 case 1: {
                     ArrayList<Cliente> clientes = new ArrayList<>();
                     try {
@@ -199,7 +199,8 @@ public class Main {
                             for (Cliente cliente : clientes) {
                                 System.out.println(cliente.toString());
                             }
-                            System.out.println("Insira o ID do cliente que deseja usar para criar o pedido ou insira 0 para retornar");
+                            System.out.println(
+                                    "Insira o ID do cliente que deseja usar para criar o pedido ou insira 0 para retornar");
                             int clienteId = SC.nextInt();
                             for (Cliente cliente : clientes) {
                                 if (clienteId == 0) {
@@ -230,10 +231,10 @@ public class Main {
                         return;
                     }
                 }
-                case 2:{
+                case 2: {
                     return;
                 }
-                default:{
+                default: {
                     System.out.println("Escolha uma opção valida.");
                 }
             }
@@ -241,15 +242,15 @@ public class Main {
     }
 
     public static void atribuirPedido() {
-        while (true){
+        while (true) {
             System.out.println("""
                     Você quer mesmo realizar essa ação?
                     1 - Sim
                     2 - Não
                     """);
             int opcao = SC.nextInt();
-            switch (opcao){
-                case 1:{
+            switch (opcao) {
+                case 1: {
                     ArrayList<Pedido> pedidos = new ArrayList<>();
                     ArrayList<Motorista> motoristas = new ArrayList<>();
                     try {
@@ -260,7 +261,8 @@ public class Main {
                             for (Pedido pedido : pedidos) {
                                 System.out.println(pedido.toString());
                             }
-                            System.out.println("Insira o ID do pedido que deseja usar para gerar a entrega ou insira 0 para retornar");
+                            System.out.println(
+                                    "Insira o ID do pedido que deseja usar para gerar a entrega ou insira 0 para retornar");
                             int pedidoId = SC.nextInt();
                             for (Pedido pedido : pedidos) {
                                 if (pedidoId == 0) {
@@ -270,33 +272,34 @@ public class Main {
                                 if (pedido.getId() == pedidoId) {
                                     System.out.println("Pedido valido");
                                     motoristas = listarMotorista();
-                                    if (motoristas == null || motoristas.isEmpty()){
+                                    if (motoristas == null || motoristas.isEmpty()) {
                                         System.out.println("Nenhum motorista Cadastrado no Momento");
-                                    }
-                                    else {
-                                        for (Motorista motorista : motoristas){
+                                    } else {
+                                        for (Motorista motorista : motoristas) {
                                             System.out.println(motorista.toString());
                                         }
-                                        System.out.println("Insira o ID do motorista que deseja usar para gerar a entrega ou insira 0 para retornar");
+                                        System.out.println(
+                                                "Insira o ID do motorista que deseja usar para gerar a entrega ou insira 0 para retornar");
                                         int motoristaId = SC.nextInt();
                                         for (Motorista motorista : motoristas) {
                                             if (motoristaId == 0) {
                                                 System.out.println("Ok, vamos retornar ao menu principal.");
                                                 return;
                                             }
-                                            if (motorista.getId() == motoristaId){
+                                            if (motorista.getId() == motoristaId) {
                                                 System.out.println("Motorista valido");
                                                 Timestamp dataSaida = new Timestamp(System.currentTimeMillis());
                                                 String dataEntrega = null;
                                                 int index = 1;
-                                                for (StatusPedido status : StatusPedido.values()){
+                                                for (StatusPedido status : StatusPedido.values()) {
                                                     System.out.println(index + " - " + status);
                                                     index++;
                                                 }
                                                 System.out.println("Escolha um status para esse pedido");
                                                 int opcaoStatus = SC.nextInt() - 1;
                                                 StatusPedido status = StatusPedido.values()[opcaoStatus];
-                                                Entrega entrega = new Entrega(pedidoId,motoristaId,dataSaida,dataEntrega,status);
+                                                Entrega entrega = new Entrega(pedidoId, motoristaId, dataSaida,
+                                                        dataEntrega, status);
                                                 ENTREGA_DAO.gerarEntrega(entrega);
                                                 System.out.println("Entrega gerada com sucesso");
                                                 return;
@@ -308,16 +311,16 @@ public class Main {
                                 }
                             }
                         }
-                    }catch(SQLException e){
+                    } catch (SQLException e) {
                         System.out.println("Erro ao acessar o banco de dados");
                         e.printStackTrace();
                         return;
                     }
                 }
-                case 2:{
+                case 2: {
                     return;
                 }
-                default:{
+                default: {
                     System.out.println("Escolha uma opção valida.");
                 }
             }
@@ -325,33 +328,33 @@ public class Main {
 
     }
 
-    public static void registrarEntrega(){
-        while (true){
+    public static void registrarEntrega() {
+        while (true) {
             System.out.println("""
                     Você quer mesmo realizar essa ação?
                     1 - Sim
                     2 - Não
                     """);
             int opcao = SC.nextInt();
-            switch (opcao){
-                case 1:{
-                    ArrayList<Entrega> entregas= new ArrayList<>();
+            switch (opcao) {
+                case 1: {
+                    ArrayList<Entrega> entregas = new ArrayList<>();
                     entregas = listarEntregas();
-                    if (entregas == null || entregas.isEmpty()){
+                    if (entregas == null || entregas.isEmpty()) {
                         System.out.println("Nenhuma Entrega Cadastrado no Momento");
-                    }
-                    else {
-                        for (Entrega entrega: entregas){
+                    } else {
+                        for (Entrega entrega : entregas) {
                             System.out.println(entrega.toString());
                         }
-                        System.out.println("Insira o ID da entrega que deseja usar para gerar o historico ou insira 0 para retornar");
+                        System.out.println(
+                                "Insira o ID da entrega que deseja usar para gerar o historico ou insira 0 para retornar");
                         int entregaId = SC.nextInt();
-                        for (Entrega entrega : entregas){
-                            if (entregaId == 0){
+                        for (Entrega entrega : entregas) {
+                            if (entregaId == 0) {
                                 System.out.println("Ok, vamos retornar ao menu principal.");
                                 return;
                             }
-                            if (entrega.getId() == entregaId){
+                            if (entrega.getId() == entregaId) {
                                 System.out.println("Entrega existe");
                                 SC.nextLine();
                                 Timestamp dataEvento = new Timestamp(System.currentTimeMillis());
@@ -372,39 +375,39 @@ public class Main {
                                 "Informe um Id valido.");
                     }
                 }
-                case 2:{
+                case 2: {
                     return;
                 }
-                default:{
+                default: {
                     System.out.println("Escolha uma opção valida.");
                 }
             }
         }
     }
 
-    public static void atualizarEntrega(){
-        while (true){
+    public static void atualizarEntrega() {
+        while (true) {
             System.out.println("""
                     Você quer mesmo realizar essa ação?
                     1 - Sim
                     2 - Não
                     """);
             int opcao = SC.nextInt();
-            switch (opcao){
-                case 1:{
+            switch (opcao) {
+                case 1: {
                     ArrayList<Entrega> entregas = new ArrayList<>();
                     entregas = listarEntregas();
-                    for (Entrega entrega: entregas){
+                    for (Entrega entrega : entregas) {
                         System.out.println(entrega.toString());
                     }
                     System.out.println("Por favor Insira o ID da entrega que deseja atualizar");
                     int id = SC.nextInt();
-                    for (Entrega entrega : entregas){
-                        if (entrega.getId() == id){
+                    for (Entrega entrega : entregas) {
+                        if (entrega.getId() == id) {
                             System.out.println(entrega.toString());
                             System.out.println("Escolha valida, Entrega escolhida");
                             int index = 1;
-                            for (StatusPedido status : StatusPedido.values()){
+                            for (StatusPedido status : StatusPedido.values()) {
                                 System.out.println(index + " - " + status);
                                 index++;
                             }
@@ -415,7 +418,7 @@ public class Main {
                                 ENTREGA_DAO.atualizarEntrega(status, id);
                                 System.out.println("Status da entrega foi atualizado");
                                 return;
-                            }catch (SQLException e) {
+                            } catch (SQLException e) {
                                 System.out.println("Erro ao acessar o banco de dados");
                                 e.printStackTrace();
                                 return;
@@ -423,63 +426,63 @@ public class Main {
                         }
                     }
                 }
-                case 2:{
+                case 2: {
                     return;
                 }
-                default:{
+                default: {
                     System.out.println("Escolha uma opção valida.");
                 }
             }
         }
     }
 
-    public static void listarECM(){
-        while (true){
+    public static void listarECM() {
+        while (true) {
             System.out.println("""
                     Você quer mesmo realizar essa ação?
                     1 - Sim
                     2 - Não
                     """);
             int opcao = SC.nextInt();
-            switch (opcao){
-                case 1:{
+            switch (opcao) {
+                case 1: {
                     ArrayList<EntregaDetalhadaDTO> entrega = new ArrayList<>();
                     try {
                         entrega = ENTREGA_DAO.listarECM();
-                        if (entrega == null || entrega.isEmpty()){
+                        if (entrega == null || entrega.isEmpty()) {
                             System.out.println("Nenhuma Entrega foi encontrada");
                             return;
                         }
-                        for (EntregaDetalhadaDTO dto : entrega){
+                        for (EntregaDetalhadaDTO dto : entrega) {
                             System.out.println(dto);
                         }
                         return;
-                    }catch (SQLException e) {
+                    } catch (SQLException e) {
                         System.out.println("Erro ao acessar o banco de dados");
                         e.printStackTrace();
                         return;
                     }
                 }
-                case 2:{
+                case 2: {
                     return;
                 }
-                default:{
+                default: {
                     System.out.println("Escolha uma opção valida.");
                 }
             }
         }
     }
 
-    public static void listarTEM(){
-        while (true){
+    public static void listarTEM() {
+        while (true) {
             System.out.println("""
                     Você quer mesmo realizar essa ação?
                     1 - Sim
                     2 - Não
                     """);
             int opcao = SC.nextInt();
-            switch (opcao){
-                case 1:{
+            switch (opcao) {
+                case 1: {
                     ArrayList<TotalEntregasMotoristaDTO> dto = new ArrayList<>();
                     try {
                         dto = ENTREGA_DAO.totalEntregaMotorista();
@@ -487,93 +490,91 @@ public class Main {
                         System.out.println("Erro ao acessar o banco de dados");
                         e.printStackTrace();
                     }
-                    if (dto == null || dto.isEmpty()){
+                    if (dto == null || dto.isEmpty()) {
                         System.out.println("Nenhuma Entrega Atribuita a Motoristas");
                         return;
                     }
-                    for (TotalEntregasMotoristaDTO motoristaDTO : dto){
+                    for (TotalEntregasMotoristaDTO motoristaDTO : dto) {
                         System.out.println(motoristaDTO);
                     }
                     return;
                 }
-                case 2:{
+                case 2: {
                     return;
                 }
-                default:{
+                default: {
                     System.out.println("Escolha uma opção valida.");
                 }
             }
         }
     }
 
-    public static void listarMV(){
-        while (true){
+    public static void listarMV() {
+        while (true) {
             System.out.println("""
                     Você quer mesmo realizar essa ação?
                     1 - Sim
                     2 - Não
                     """);
             int opcao = SC.nextInt();
-            switch (opcao){
-                case 1:{
+            switch (opcao) {
+                case 1: {
                     ArrayList<MaiorVolumeEntregueDTO> dtos = new ArrayList<>();
                     try {
                         dtos = ENTREGA_DAO.MaiorVolumeEntregue();
-                    }catch (SQLException e) {
+                    } catch (SQLException e) {
                         System.out.println("Erro ao acessar o banco de dados");
                         e.printStackTrace();
                     }
-                    if (dtos == null || dtos.isEmpty()){
+                    if (dtos == null || dtos.isEmpty()) {
                         System.out.println("Nenhuma Entrega Realizada");
                         return;
                     }
-                    for (MaiorVolumeEntregueDTO dto : dtos){
+                    for (MaiorVolumeEntregueDTO dto : dtos) {
                         System.out.println(dto);
                     }
                     return;
                 }
-                case 2:{
+                case 2: {
                     return;
                 }
-                default:{
+                default: {
                     System.out.println("Escolha uma opção valida.");
                 }
             }
         }
     }
 
-    public static void listarPPE(){
+    public static void listarPPE() {
 
     }
 
-    public static ArrayList<Motorista> listarMotorista(){
+    public static ArrayList<Motorista> listarMotorista() {
         ArrayList<Motorista> motoristas = new ArrayList<>();
         try {
             motoristas = MOTORISTA_DAO.listarMotorista();
-            if (motoristas == null || motoristas.isEmpty()){
+            if (motoristas == null || motoristas.isEmpty()) {
                 System.out.println("Nenhum Motorista Cadastrado no Momento");
-            }
-            else {
+            } else {
                 return motoristas;
             }
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             System.out.println("Erro ao acessar o banco de dados");
             e.printStackTrace();
         }
         return motoristas;
     }
 
-    public static ArrayList<Entrega> listarEntregas(){
+    public static ArrayList<Entrega> listarEntregas() {
         ArrayList<Entrega> entregas = new ArrayList<>();
         try {
             entregas = ENTREGA_DAO.listarEntregas();
-            if (entregas == null || entregas.isEmpty()){
+            if (entregas == null || entregas.isEmpty()) {
                 System.out.println("Nenhuma Entrega Cadastrado no Momento");
-            }
-            else {
+            } else {
                 return entregas;
             }
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             System.out.println("Erro ao acessar o banco de dados");
             e.printStackTrace();
         }

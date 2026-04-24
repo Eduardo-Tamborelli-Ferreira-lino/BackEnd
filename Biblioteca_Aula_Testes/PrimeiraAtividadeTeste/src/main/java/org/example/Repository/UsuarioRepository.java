@@ -1,7 +1,6 @@
 package org.example.Repository;
 
 import org.example.Connection.Conexao;
-import org.example.Model.Livro;
 import org.example.Model.Usuario;
 
 import java.sql.Connection;
@@ -12,7 +11,7 @@ import java.util.ArrayList;
 
 public class UsuarioRepository {
 
-    public void inserirUsuario (Usuario usuario) throws SQLException {
+    public void inserirUsuario(Usuario usuario) throws SQLException {
         String command = """
                 INSERT INTO Usuario(
                 nome,
@@ -21,15 +20,15 @@ public class UsuarioRepository {
                 (?, ?)
                 """;
         try (Connection conn = Conexao.conectar();
-             PreparedStatement stmt = conn.prepareStatement(command)){
+                PreparedStatement stmt = conn.prepareStatement(command)) {
             stmt.setString(1, usuario.getNome());
             stmt.setString(2, usuario.getEmail());
             stmt.executeUpdate();
         }
     }
 
-    public ArrayList<Usuario> consultarUsuarios () throws SQLException {
-        ArrayList <Usuario> usuarios = new ArrayList<>();
+    public ArrayList<Usuario> consultarUsuarios() throws SQLException {
+        ArrayList<Usuario> usuarios = new ArrayList<>();
         String command = """
                 SELECT
                 id,
@@ -38,20 +37,19 @@ public class UsuarioRepository {
                 FROM Usuario
                 """;
         try (Connection conn = Conexao.conectar();
-             PreparedStatement stmt = conn.prepareStatement(command)){
+                PreparedStatement stmt = conn.prepareStatement(command)) {
             ResultSet rs = stmt.executeQuery();
-            while (rs.next()){
+            while (rs.next()) {
                 usuarios.add(new Usuario(
                         rs.getInt("id"),
                         rs.getString("nome"),
-                        rs.getString("email")
-                ));
+                        rs.getString("email")));
             }
         }
         return usuarios;
     }
 
-    public Usuario buscarUsuario (int usuarioId) throws SQLException {
+    public Usuario buscarUsuario(int usuarioId) throws SQLException {
         Usuario usuario = null;
         String command = """
                 SELECT
@@ -62,17 +60,16 @@ public class UsuarioRepository {
                 WHERE id = ?
                 """;
         try (Connection conn = Conexao.conectar();
-             PreparedStatement stmt = conn.prepareStatement(command)){
+                PreparedStatement stmt = conn.prepareStatement(command)) {
             stmt.setInt(1, usuarioId);
             ResultSet rs = stmt.executeQuery();
-            if (rs.next()){
+            if (rs.next()) {
                 return usuario = new Usuario(
                         rs.getInt("id"),
                         rs.getString("nome"),
-                        rs.getString("email")
-                );
+                        rs.getString("email"));
             }
         }
-        return null;
+        return usuario;
     }
 }

@@ -2,7 +2,6 @@ package org.example.Classes;
 
 import org.example.Enum.StatusPedido;
 
-import java.sql.Time;
 import java.sql.Timestamp;
 
 public class Pedido {
