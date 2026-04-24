@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: MySQL_Back-End
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 231231
+      MYSQL_DATABASE: SistemaGestaoBiblioteca
+    ports:
+      - "3347:3306"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
