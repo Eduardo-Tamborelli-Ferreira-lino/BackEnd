@@ -2,7 +2,7 @@ package com.example.Model;
 
 import java.time.LocalDate;
 
-public class flight {
+public class Flight {
 
     private long id;
 
@@ -14,7 +14,7 @@ public class flight {
 
     private LocalDate time;
 
-    public flight(long id, long planeId, long originId, long destinationId, LocalDate time) {
+    public Flight(long id, long planeId, long originId, long destinationId, LocalDate time) {
         this.id = id;
         this.planeId = planeId;
         this.originId = originId;
@@ -22,7 +22,7 @@ public class flight {
         this.time = time;
     }
 
-    public flight(long planeId, long originId, long destinationId, LocalDate time) {
+    public Flight(long planeId, long originId, long destinationId, LocalDate time) {
         this.planeId = planeId;
         this.originId = originId;
         this.destinationId = destinationId;
