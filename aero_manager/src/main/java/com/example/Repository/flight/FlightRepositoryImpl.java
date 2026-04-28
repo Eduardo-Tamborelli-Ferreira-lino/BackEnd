@@ -1,4 +1,4 @@
-package com.example.Repository.flight;
+package com.example.Repository.Flight;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
