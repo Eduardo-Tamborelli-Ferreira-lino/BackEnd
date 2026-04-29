@@ -8,6 +8,13 @@ public class Veiculo {
 
     public Veiculo() {}
 
+    public Veiculo(Integer id, String placa, String modelo, String status) {
+        this.id = id;
+        this.placa = placa;
+        this.modelo = modelo;
+        this.status = status;
+    }
+
     public Veiculo(String placa, String modelo, String status) {
         this.placa = placa;
         this.modelo = modelo;

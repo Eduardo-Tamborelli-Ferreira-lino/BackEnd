@@ -1,23 +1,18 @@
 package org.example.model;
 
-public class Motorista {
+public class Leitor {
     private Integer id;
     private String nome;
-    private String cnh;
+    private String email;
     private Boolean ativo;
 
-    public Motorista() {}
-
-    public Motorista(Integer id, String nome, String cnh, Boolean ativo) {
-        this.id = id;
-        this.nome = nome;
-        this.cnh = cnh;
-        this.ativo = ativo;
+    public Leitor() {
     }
 
-    public Motorista(String nome, String cnh, Boolean ativo) {
+    public Leitor(Integer id, String nome, String email, Boolean ativo) {
+        this.id = id;
         this.nome = nome;
-        this.cnh = cnh;
+        this.email = email;
         this.ativo = ativo;
     }
 
@@ -37,12 +32,12 @@ public class Motorista {
         this.nome = nome;
     }
 
-    public String getCnh() {
-        return cnh;
+    public String getEmail() {
+        return email;
     }
 
-    public void setCnh(String cnh) {
-        this.cnh = cnh;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public Boolean getAtivo() {

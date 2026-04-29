@@ -72,11 +72,28 @@ public class FleetServiceImpl implements FleetService {
 
     @Override
     public List<Veiculo> buscarVeiculosPorIds(List<Integer> ids) throws SQLException {
-        return List.of();
+
+        List <Veiculo> veiculos = new ArrayList<>();
+
+        if (ids == null || ids.size() <= 0) {
+            throw new IllegalArgumentException("A lista de IDs não pode estar vazia");
+        }
+        else {
+            veiculos = VEICULOS_REPOSITORY_IMPL.buscarVeiculosIn(ids);
+
+            return veiculos;
+        }
     }
 
     @Override
     public List<Motorista> buscarMotoristasPorNome(String nome) throws SQLException {
-        return List.of();
+
+        ArrayList<Motorista> motoristas = new ArrayList<>();
+
+        if (nome == null|| nome.isBlank() || nome.length() < 3 ) {
+            throw new IllegalArgumentException("O termo de busca deve conter ao menos 3 caracteres");
+        }
+        
+        return motoristas = MOTORISTA_REPOSITORY_IMPL.buscarPorNome(nome);
     }
 }

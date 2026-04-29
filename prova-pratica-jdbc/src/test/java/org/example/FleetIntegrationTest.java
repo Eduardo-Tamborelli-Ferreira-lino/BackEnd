@@ -71,17 +71,17 @@ public class FleetIntegrationTest {
         return null;
     }
 
-    private int contarIncidentes() throws Exception {
-        String sql = "SELECT COUNT(*) FROM Incidente";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getInt(1);
-                }
-            }
-        }
-        return 0;
-    }
+    // private int contarIncidentes() throws Exception {
+    //     String sql = "SELECT COUNT(*) FROM Incidente";
+    //     try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+    //         try (ResultSet rs = stmt.executeQuery()) {
+    //             if (rs.next()) {
+    //                 return rs.getInt(1);
+    //             }
+    //         }
+    //     }
+    //     return 0;
+    // }
 
     private int contarMotoristas() throws Exception {
         String sql = "SELECT COUNT(*) FROM Motorista";

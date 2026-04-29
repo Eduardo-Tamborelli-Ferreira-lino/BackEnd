@@ -26,7 +26,6 @@ public class EntregaDao {
                 VALUES
                 (?, ?, ?, ?, ?)
                 """;
-        StatusPedido statusPedido;
         try (Connection conn = Conexao.conectar();
                 PreparedStatement stmt = conn.prepareStatement(command)) {
             stmt.setInt(1, entrega.getPedidoId());

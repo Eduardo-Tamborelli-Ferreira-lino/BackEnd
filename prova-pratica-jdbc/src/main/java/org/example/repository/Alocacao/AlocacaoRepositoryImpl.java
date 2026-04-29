@@ -66,7 +66,7 @@ public class AlocacaoRepositoryImpl implements AlocacaoRepository {
                         rs.getObject("data_inicio", LocalDate.class),
                         rs.getObject("data_fim", LocalDate.class));
             }
-            throw new RuntimeException("Registro de alocação não localizado para atualizaçã");
+            throw new RuntimeException("Registro de alocação não localizado para atualização");
         }
     }
 
