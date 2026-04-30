@@ -8,7 +8,6 @@ import org.example.repository.RelatorioCancelamento.RelatorioRepositoryImpl;
 import org.example.repository.Reserva.ReservaRepositoryImpl;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class CinemaServiceImpl implements CinemaService {
