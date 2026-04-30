@@ -158,11 +158,11 @@ public class CinemaIntegrationTest {
 
     @Test
     public void testRegistrarCancelamentoReservaInexistente() {
-        Cancelamento cancelamento = new Cancelamento(1, 999, "Teste", 10.0);
+        Cancelamento cancelamento = new Cancelamento(1, 999, "DANO_AO_EQUIPAMENTO", 10.0);
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             cinemaService.registrarCancelamento(cancelamento);
         });
-        assertEquals("Alocação não encontrada ou inválida", exception.getMessage()); // Seguindo o padrão de erro de FK
+        assertEquals("Reserva não encontrada ou inválida", exception.getMessage()); // Seguindo o padrão de erro de FK
     }
 
     @Test
@@ -208,6 +208,24 @@ public class CinemaIntegrationTest {
             cinemaService.buscarFilmesPorIds(null);
         });
         assertEquals("A lista de IDs não pode estar vazia", exception.getMessage());
+    }
+
+    @Test
+    public void testBuscarClientesPorNomeSucesso() throws Exception {
+        insertCliente(10, "Eduardo Silva", "eduardo@email.com");
+        insertCliente(11, "Maria Santos", "maria@email.com");
+        insertCliente(12, "Carlos Eduardo", "carlos@email.com");
+
+        List<Cliente> clientes = cinemaService.buscarClientesPorNome("Eduardo");
+        
+        assertNotNull("A lista de clientes não deve ser nula", clientes);
+        assertEquals("Deve encontrar 2 clientes com 'Eduardo' no nome", 2, clientes.size());
+        
+        boolean encontrouEduardoSilva = clientes.stream().anyMatch(c -> "Eduardo Silva".equals(c.getNome()));
+        boolean encontrouCarlosEduardo = clientes.stream().anyMatch(c -> "Carlos Eduardo".equals(c.getNome()));
+        
+        assertTrue("Deveria ter encontrado Eduardo Silva", encontrouEduardoSilva);
+        assertTrue("Deveria ter encontrado Carlos Eduardo", encontrouCarlosEduardo);
     }
 
     @Test
