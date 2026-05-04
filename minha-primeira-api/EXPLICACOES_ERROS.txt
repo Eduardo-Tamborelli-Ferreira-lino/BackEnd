@@ -1,0 +1,28 @@
+# EXPLICAÇÕES DOS ERROS (O PORQUÊ)
+
+Aqui estão as explicações detalhadas de por que seu sistema apresentou erros:
+
+## 1. Erro de Porta no Docker ("Port is already allocated")
+**Por que aconteceu?**
+Cada porta no seu computador (como a 3356) só pode ser usada por um programa de cada vez. O erro ocorreu porque você já tem um container de MySQL rodando (chamado "mysql" no Docker Desktop) que capturou essa porta. Quando você tentou subir o seu novo projeto ("minha-primeira-api"), o Docker tentou usar a mesma porta e foi impedido pelo sistema operacional.
+
+## 2. Erro "Public Key Retrieval is not allowed" no Java
+**Por que aconteceu?**
+O MySQL 8 usa um novo sistema de senhas chamado `caching_sha2_password`. Por segurança, ele não envia a "chave pública" para o Java através de uma conexão que não seja criptografada (SSL desabilitado). Como na sua URL de conexão você colocou `useSSL=false`, o MySQL bloqueia o acesso inicial.
+**A solução:** Adicionar `allowPublicKeyRetrieval=true` na URL permite que o Java peça essa chave mesmo sem SSL.
+
+## 3. Erro "docker-compose não é reconhecido"
+**Por que aconteceu?**
+Antigamente, o Docker Compose era um programa separado (um script Python). Hoje, ele foi integrado diretamente ao comando principal do Docker como um plugin. Por isso, em versões modernas, o comando correto é `docker compose` (sem o traço).
+
+## 4. Importância do @Service e Interfaces (Spring Boot)
+**Por que usar @Service?**
+Sem essa anotação, o Spring Boot ignora a classe. Ele não "vê" o arquivo como parte da engrenagem do sistema. O Spring só gerencia o que você marca explicitamente como componente.
+**Por que usar Interfaces?**
+Chama-se "Desacoplamento". Se você quiser trocar o jeito que salva os dados amanhã, você não precisa quebrar o resto do código. Você apenas troca a "peça" (a implementação) que se encaixa na "tomada" (a interface).
+
+---
+**Dica para resolver:**
+1. Pare o container "mysql" antigo no Docker Desktop.
+2. Atualize a URL no `ConnectionFactory.java`.
+3. Rode `docker compose up -d` no terminal.
