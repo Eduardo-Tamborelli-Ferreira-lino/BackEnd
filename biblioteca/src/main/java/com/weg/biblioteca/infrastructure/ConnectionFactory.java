@@ -27,7 +27,7 @@ public class ConnectionFactory {
             try (Connection dbConn = getConnection()) {
                 dbConn.createStatement().executeUpdate(
                     "CREATE TABLE Book (" +
-                    "id INT PRIMARY KEY AUTO_INCREMENT," +
+                    "id BIGINT PRIMARY KEY AUTO_INCREMENT," +
                     "title VARCHAR(150) NOT NULL," +
                     "author VARCHAR(100) UNIQUE NOT NULL," +
                     "year_publication INT NOT NULL" +

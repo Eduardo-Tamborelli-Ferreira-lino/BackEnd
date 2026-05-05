@@ -12,40 +12,41 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.weg.biblioteca.model.Book;
-import com.weg.biblioteca.service.book.BookService;
+import com.weg.biblioteca.model.User;
+import com.weg.biblioteca.service.user.UserService;
 
 @RestController
-@RequestMapping("/book")
-public class BookController {
+@RequestMapping("/user")
+public class UserController {
 
-    private final BookService bookService;
+    private final UserService userService;
 
-    public BookController(BookService bookService) {
-        this.bookService = bookService;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
     @PostMapping
-    public Book save(@RequestBody Book book) {
-        
-        try{
+    public User save(@RequestBody User user) {
 
-            bookService.save(book);
-            
-            return book; 
-        } 
+        try {
 
-        catch (SQLException | RuntimeException e) {
+            userService.save(user);
+
+            return user;
+
+        }
+        catch(SQLException | RuntimeException e) {
             throw new RuntimeException(e.getMessage());
         }
     }
 
     @GetMapping("/{id}")
-    public Book findById(@PathVariable Long id) {
+    public User findById(@PathVariable Long id) {
 
         try {
 
-            return bookService.findById(id);
+            return userService.findByID(id);
+
         }
         catch(SQLException | RuntimeException e) {
             throw new RuntimeException(e.getMessage());
@@ -53,10 +54,12 @@ public class BookController {
     }
 
     @GetMapping
-    public List<Book> findAll(){
+    public List<User> findAll() {
 
         try {
-            return bookService.findAll();
+
+            return userService.findAll();
+
         }
         catch(SQLException | RuntimeException e) {
             throw new RuntimeException(e.getMessage());
@@ -64,22 +67,26 @@ public class BookController {
     }
 
     @PutMapping("/{id}")
-    public Book update(@PathVariable Long id, @RequestBody Book book) {
+    public User update(@PathVariable Long id, @RequestBody User user) {
 
-        try{
-            return bookService.update(id, book);
+        try {
+
+            return userService.update(id, user);
+
         }
         catch(SQLException | RuntimeException e) {
             throw new RuntimeException(e.getMessage());
         }
     }
 
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
+    @DeleteMapping ("/{id}")
+    public void Delete (@PathVariable Long id) {
 
-        try{
-            bookService.delete(id);
-        } 
+        try {
+
+            userService.delete(id);
+
+        }
         catch(SQLException | RuntimeException e) {
             throw new RuntimeException(e.getMessage());
         }

@@ -32,26 +32,47 @@ public class BookServiceImpl implements BookService{
 
     @Override
     public Book findById(Long id) throws SQLException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findById'");
+
+        Book book = bookRepository.findById(id).
+            orElseThrow(() -> new RuntimeException("ID not found on data base."));
+
+        return book;
     }
 
     @Override
     public List<Book> findAll() throws SQLException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findAll'");
+        
+        List<Book> books = bookRepository.findAll();
+
+        if (books == null || books.isEmpty()) {
+            throw new RuntimeException("Nome book found on data base.");
+        }
+
+        return books;
     }
 
     @Override
-    public void update() throws SQLException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
+    public Book update(Long id, Book book) throws SQLException {
+
+        if (!bookRepository.bookExist(id)) {
+            throw new RuntimeException("Book not found");
+        }
+
+        book.setId(id);
+
+        bookRepository.update(book);
+        
+        return book;
     }
 
     @Override
-    public void delete() throws SQLException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'delete'");
+    public void delete(Long id) throws SQLException {
+
+        if (!bookRepository.bookExist(id)) {
+            throw new RuntimeException("Book not found");
+        }
+
+        bookRepository.delete(id);
     }
 
 }

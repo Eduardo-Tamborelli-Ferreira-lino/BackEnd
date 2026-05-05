@@ -3,7 +3,7 @@ version: '3.8'
 services:
   db:
     image: mysql:8.0
-    container_name: api
+    container_name: Minha Primeira API
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: mysqlPW

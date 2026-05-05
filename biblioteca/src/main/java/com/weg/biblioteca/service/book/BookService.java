@@ -13,7 +13,7 @@ public interface BookService {
 
     List<Book> findAll() throws SQLException;
 
-    void update() throws SQLException;
+    Book update(Long id, Book book) throws SQLException;
 
-    void delete() throws SQLException;
+    void delete(Long id) throws SQLException;
 }
