@@ -1,6 +1,7 @@
 package com.weg.biblioteca.repository.loan;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -36,7 +37,7 @@ public class LoanRepositoryImpl implements LoanRepository{
 
             stmt.setLong(1, loan.getBook_id());
             stmt.setLong(2, loan.getUser_id());
-            stmt.setObject(3, loan.getLoanDate());
+            stmt.setDate(3, Date.valueOf(loan.getLoanDate()));
 
             stmt.executeUpdate();
 
@@ -77,8 +78,8 @@ public class LoanRepositoryImpl implements LoanRepository{
                 
                 Long bookId = rs.getLong("book_id");
                 Long userId = rs.getLong("user_id");
-                LocalDate loanDate = rs.getObject("loan_date" , LocalDate.class);
-                LocalDate returnDate = rs.getObject("return_date", LocalDate.class);
+                LocalDate loanDate = rs.getDate("loan_date") != null ? rs.getDate("loan_date").toLocalDate() : null;
+                LocalDate returnDate = rs.getDate("return_date") != null ? rs.getDate("return_date").toLocalDate() : null;
 
                 return Optional.of(new Loan(
                     id,
@@ -116,8 +117,8 @@ public class LoanRepositoryImpl implements LoanRepository{
                 Long id = rs.getLong("id");
                 Long bookId = rs.getLong("book_id");
                 Long userId = rs.getLong("user_id");
-                LocalDate loanDate = rs.getObject("loan_date" , LocalDate.class);
-                LocalDate returnDate = rs.getObject("return_date", LocalDate.class);
+                LocalDate loanDate = rs.getDate("loan_date") != null ? rs.getDate("loan_date").toLocalDate() : null;
+                LocalDate returnDate = rs.getDate("return_date") != null ? rs.getDate("loan_date").toLocalDate() : null;
 
                 loans.add(new Loan(
                     id,
@@ -179,7 +180,7 @@ public class LoanRepositoryImpl implements LoanRepository{
 
             stmt.setLong(1, loan.getBook_id());
             stmt.setLong(2, loan.getUser_id());
-            stmt.setObject(3, loan.getLoanDate());
+            stmt.setDate(3, Date.valueOf(loan.getLoanDate()));
             stmt.setLong(4, loan.getId());
 
             int altersLines = stmt.executeUpdate();
@@ -202,7 +203,7 @@ public class LoanRepositoryImpl implements LoanRepository{
         try(Connection conn = ConnectionFactory.getConnection();
         PreparedStatement stmt = conn.prepareStatement(command)) {
 
-            stmt.setObject(1, loan.getReturnDate());
+            stmt.setDate(1, Date.valueOf(loan.getReturnDate()));
             stmt.setLong(2, loan.getId());
 
             int altersLines = stmt.executeUpdate();
