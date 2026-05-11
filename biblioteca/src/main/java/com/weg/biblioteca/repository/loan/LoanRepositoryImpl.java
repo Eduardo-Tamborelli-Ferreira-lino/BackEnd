@@ -53,7 +53,7 @@ public class LoanRepositoryImpl implements LoanRepository{
         }
         throw new RuntimeException("Failed on Save the Loan");
     }
-
+        
     @Override
     public Optional<Loan> findById(Long id) throws SQLException {
 

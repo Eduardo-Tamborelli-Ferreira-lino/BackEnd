@@ -80,7 +80,7 @@ public class ContatoRepositoryImpl implements ContatoRepository {
     }
 
     @Override
-    public void put(Contato contato) throws SQLException {
+    public Contato put(Contato contato) throws SQLException {
 
         String command = """
                 UPDATE Contato
@@ -102,6 +102,8 @@ public class ContatoRepositoryImpl implements ContatoRepository {
             if (linhasAlteradas <= 0) {
                 throw new RuntimeException("ID not found on data base");
             }
+
+            return contato;
         }
     }
 

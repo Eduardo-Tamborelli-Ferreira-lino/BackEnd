@@ -1,10 +1,13 @@
 package com.weg.minha_primeira_api.service;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.weg.minha_primeira_api.dto.ContatoRequisicaoDto;
+import com.weg.minha_primeira_api.dto.ContatoRespostaDto;
+import com.weg.minha_primeira_api.mapper.ContatoMapper;
 import com.weg.minha_primeira_api.model.Contato;
 import com.weg.minha_primeira_api.repository.ContatoRepository;
 
@@ -12,30 +15,39 @@ import com.weg.minha_primeira_api.repository.ContatoRepository;
 public class ContatoServiceImpl implements ContatoService {
 
     private final ContatoRepository contatoRepository;
+    private final ContatoMapper contatoMapper;
 
-    public ContatoServiceImpl(ContatoRepository contatoRepository) {
+    public ContatoServiceImpl(ContatoRepository contatoRepository, ContatoMapper contatoMapper) {
         this.contatoRepository = contatoRepository;
+        this.contatoMapper = contatoMapper;
     }
 
     @Override
-    public Contato post(Contato contato) throws SQLException {
-        contatoRepository.post(contato);
+    public ContatoRespostaDto post(ContatoRequisicaoDto contatoRequisicaoDto) throws SQLException {
+        
+        Contato contato = contatoMapper.paraEntidade(contatoRequisicaoDto);
+        Contato contatoCriado = contatoRepository.post(contato);
+        ContatoRespostaDto contatoRespostaDto = contatoMapper.paraRespostaDto(contatoCriado);
 
-        return contato;
+        return contatoRespostaDto;
     }
 
     @Override
-    public Contato get(Long id) throws SQLException {
+    public ContatoRespostaDto get(Long id) throws SQLException {
 
         Contato contato = contatoRepository.get(id);
 
-        return contato;
+        return contatoMapper.paraRespostaDto(contato);
     }
 
     @Override
-    public void put(Contato contato) throws SQLException {
+    public ContatoRespostaDto put(Long id, ContatoRequisicaoDto requisicaoDto) throws SQLException {
 
-        contatoRepository.put(contato);
+        Contato contato = contatoMapper.paraEntidade(requisicaoDto);
+        contato.setId(id);
+        Contato contatoAtualizado = contatoRepository.put(contato);
+        
+        return contatoMapper.paraRespostaDto(contatoAtualizado);
     }
 
     @Override
@@ -45,15 +57,15 @@ public class ContatoServiceImpl implements ContatoService {
     }
 
     @Override
-    public ArrayList<Contato> getAll() throws SQLException {
+    public List<ContatoRespostaDto> getAll() throws SQLException {
 
-        ArrayList <Contato> contatos = contatoRepository.getAll();
+        List <Contato> contatos = contatoRepository.getAll();
 
         if (contatos == null || contatos.isEmpty()) {
             throw new RuntimeException("Lista está vazia");
         }
 
-        return contatos;
+        return contatos.stream().map(contatoMapper :: paraRespostaDto).toList();
     }
 
 }

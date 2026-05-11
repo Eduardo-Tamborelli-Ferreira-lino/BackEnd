@@ -13,7 +13,7 @@ public interface ContatoRepository {
 
     ArrayList<Contato> getAll () throws SQLException;
 
-    void put (Contato contato) throws SQLException;
+    Contato put (Contato contato) throws SQLException;
 
     void delete (Long id) throws SQLException;
 
