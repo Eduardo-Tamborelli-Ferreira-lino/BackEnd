@@ -5,22 +5,27 @@ public class Teacher {
     private Long id;
     private String name;
     private String email;
-    private String disccipline;
+    private String subject;
     
-    public Teacher(Long id, String name, String email, String disccipline) {
+    public Teacher(Long id, String name, String email, String subject) {
         this.id = id;
         this.name = name;
         this.email = email;
-        this.disccipline = disccipline;
+        this.subject = subject;
     }
 
-    public Teacher(String name, String email, String disccipline) {
+    public Teacher(String name, String email, String subject) {
         this.name = name;
         this.email = email;
-        this.disccipline = disccipline;
+        this.subject = subject;
     }
 
     public Teacher() {
+    }
+
+    public Teacher(Long id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
     public Long getId() {
@@ -47,12 +52,12 @@ public class Teacher {
         this.email = email;
     }
 
-    public String getDisccipline() {
-        return disccipline;
+    public String getSubject() {
+        return subject;
     }
 
-    public void setDisccipline(String disccipline) {
-        this.disccipline = disccipline;
+    public void setSubject(String subject) {
+        this.subject = subject;
     }
 
     

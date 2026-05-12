@@ -1,12 +1,12 @@
 package com.weg.school_management.dto.student;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public record StudentRequestDto(    
     String name,
     String email,
     String registration,
-    LocalDateTime dateBirth
+    LocalDate dateBirth
 ) {
 
 }

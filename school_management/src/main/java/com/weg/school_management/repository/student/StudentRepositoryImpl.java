@@ -11,10 +11,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.stereotype.Repository;
+
 import com.weg.school_management.connection.ConnectionFactory;
 import com.weg.school_management.model.Student;
 
-public class StudentRespositoryImpl implements StudentRepository{
+@Repository
+public class StudentRepositoryImpl implements StudentRepository{
 
     @Override
     public Student createStudent(Student student) throws SQLException {
@@ -49,7 +52,7 @@ public class StudentRespositoryImpl implements StudentRepository{
                 return student;
             }
         }
-        throw new RuntimeException("Can't save the student on the system.");
+        throw new RuntimeException("Can't save the student in the system.");
     }
 
     @Override
@@ -77,14 +80,14 @@ public class StudentRespositoryImpl implements StudentRepository{
                 String name = rs.getString("name");
                 String email = rs.getString("email");
                 String registration = rs.getString("registration");
-                LocalDate dataBirth = rs.getDate("data_birth").toLocalDate();
+                LocalDate dateBirth = rs.getDate("date_birth").toLocalDate();
 
                 return Optional.of(new Student(
                     id,
                     name,
                     email,
                     registration,
-                    dataBirth
+                    dateBirth
                 ));
             }
             return Optional.empty();
@@ -117,7 +120,7 @@ public class StudentRespositoryImpl implements StudentRepository{
                 String name = rs.getString("name");
                 String email = rs.getString("email");
                 String registration = rs.getString("registration");
-                LocalDate dataBirth = rs.getDate("data_birth").toLocalDate();
+                LocalDate dataBirth = rs.getDate("date_birth").toLocalDate();
 
                 students.add(new Student(
                     id,
@@ -133,14 +136,55 @@ public class StudentRespositoryImpl implements StudentRepository{
 
     @Override
     public Student updateStudent(Student student) throws SQLException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateStudent'");
+
+        String command = """
+                UPDATE student
+                SET 
+                name = ?,
+                email = ?,
+                registration = ?,
+                date_birth = ?
+                WHERE id = ?
+                """;
+
+        try(Connection conn = ConnectionFactory.getConnection();
+        PreparedStatement stmt = conn.prepareStatement(command)) {
+            
+            stmt.setString(1, student.getName());
+            stmt.setString(2, student.getEmail());
+            stmt.setString(3, student.getRegistration());
+            stmt.setDate(4, Date.valueOf(student.getDateBirth()));
+            stmt.setLong(5, student.getId());
+
+            int changeLines = stmt.executeUpdate();
+
+            if (changeLines <= 0) {
+                throw new RuntimeException("You can't edit the profile of an absent student");
+            }
+
+            return student;
+        }
     }
 
     @Override
     public void delete(Long id) throws SQLException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'delete'");
+
+        String command = """
+                DELETE FROM student
+                WHERE id = ?
+                """;
+
+        try(Connection conn = ConnectionFactory.getConnection();
+        PreparedStatement stmt = conn.prepareStatement(command)) {
+
+            stmt.setLong(1, id);
+
+            int changeLines = stmt.executeUpdate();
+
+            if (changeLines <= 0) {
+                throw new RuntimeException("You can't delete this student");
+            }
+        }
     }
 
 }
