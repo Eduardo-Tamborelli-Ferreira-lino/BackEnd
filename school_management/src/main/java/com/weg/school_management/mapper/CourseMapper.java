@@ -1,5 +1,7 @@
 package com.weg.school_management.mapper;
 
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 
 import com.weg.school_management.dto.course.CourseRequestDto;
@@ -13,18 +15,17 @@ public class CourseMapper {
 
         return new Course(
             requestDto.name(),
-            requestDto.code(),
-            requestDto.teacherIds()
+            requestDto.code()
         );
     }
 
-    public CourseResponseDto toResponseDto(Course course) {
+    public CourseResponseDto toResponseDto(Course course, List<String> teachers) {
 
         return new CourseResponseDto(
             course.getId(),
             course.getName(),
             course.getCode(),
-            course.getTeacherNames()
+            teachers
         );
     }
 }

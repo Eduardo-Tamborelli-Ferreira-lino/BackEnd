@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -81,14 +82,65 @@ public class CourseRepositoryImpl implements CourseRepository{
 
     @Override
     public List<Course> findAllCourses() throws SQLException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findAllCourses'");
+
+        List<Course> courses = new ArrayList<>();
+
+        String command = """
+                SELECT
+                id,
+                name,
+                code
+                FROM course
+                """;
+
+        try(Connection conn = ConnectionFactory.getConnection();
+        PreparedStatement stmt = conn.prepareStatement(command)) {
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+
+                Long id = rs.getLong("id");
+                String name = rs.getString("name");
+                String code = rs.getString("code");
+
+                courses.add(new Course(
+                    id,
+                    name,
+                    code
+                ));
+
+            }
+        }
+        return courses; 
     }
 
     @Override
     public Course updateCourse(Course course) throws SQLException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateCourse'");
+
+        String command = """
+                UPDATE course
+                SET 
+                name = ?,
+                code = ?
+                WHERE id = ?
+                """;
+
+        try(Connection conn = ConnectionFactory.getConnection();
+        PreparedStatement stmt = conn.prepareStatement(command)) {
+
+            stmt.setString(1, course.getName());
+            stmt.setString(2, course.getCode());
+            stmt.setLong(3, course.getId());
+
+            int changeLines = stmt.executeUpdate();
+
+            if (changeLines <= 0) {
+                throw new RuntimeException("The course can't be edit in the system. We have some error on the code.");
+            }
+            
+            return course;
+        }
     }
 
     @Override

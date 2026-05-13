@@ -3,6 +3,7 @@ package com.weg.school_management.service.course;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -15,7 +16,7 @@ import com.weg.school_management.repository.classRepo.ClassRepository;
 import com.weg.school_management.repository.course.CourseRepository;
 
 @Service
-public class CourseServiceImpl implements CourseService{
+public class CourseServiceImpl implements CourseService {
 
     private final CourseRepository courseRepository;
     private final CourseMapper courseMapper;
@@ -34,13 +35,13 @@ public class CourseServiceImpl implements CourseService{
         Course course = courseMapper.toEntity(requestDto);
 
         if (course.getName() == null || course.getCode() == null ||
-        course.getName().isBlank() || course.getCode().isBlank()) {
+                course.getName().isBlank() || course.getCode().isBlank()) {
             throw new RuntimeException("Some value is null, pls enter with values.");
         }
 
         courseRepository.createCourse(course);
 
-        return courseMapper.toResponseDto(course);
+        return courseMapper.toResponseDto(course, null);
     }
 
     @Override
@@ -56,15 +57,33 @@ public class CourseServiceImpl implements CourseService{
             teacherNames.add(teacher.getName());
         }
 
-        CourseResponseDto courseResponseDto = new CourseResponseDto(course.getId(),course.getName(), course.getCode(), teacherNames);
-
-        return courseResponseDto;
+        return courseMapper.toResponseDto(course, teacherNames);
     }
 
     @Override
     public List<CourseResponseDto> findAllCourses() throws SQLException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findAllCourses'");
+
+        List<Course> courses = new ArrayList<>();
+
+        List<CourseResponseDto> coursesDto = new ArrayList<>();
+
+        courses = courseRepository.findAllCourses();
+
+        if (courses == null || courses.isEmpty()) {
+            throw new RuntimeException(
+                    "Don't have any courses in the system, enter with a courses and after do this action");
+        }
+
+        for (Course course : courses) {
+            
+            List<Teacher> teachers = classRepository.findAllTeachers(course.getId());
+
+            List<String> teacherNames = teachers.stream().map(Teacher :: getName).collect(Collectors.toList());
+
+            coursesDto.add(courseMapper.toResponseDto(course, teacherNames));
+        }
+
+        return coursesDto;
     }
 
     @Override

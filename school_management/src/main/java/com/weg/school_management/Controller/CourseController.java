@@ -1,6 +1,7 @@
 package com.weg.school_management.Controller;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,6 +43,20 @@ public class CourseController {
         try {
             
             CourseResponseDto responseDto = courseService.findCourseById(id);
+
+            return responseDto;
+
+        } catch (SQLException | RuntimeException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    @GetMapping
+    public List<CourseResponseDto> findCourseById () throws SQLException {
+
+        try {
+            
+            List<CourseResponseDto> responseDto = courseService.findAllCourses();
 
             return responseDto;
 
